@@ -1,0 +1,17 @@
+{
+  "name": "some-tasks-in-typescript",
+  "version": "1.0.0",
+  "description": "testing and educational  project ",
+  "main": "noname-tasks.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "DmitryYeremieiev",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
