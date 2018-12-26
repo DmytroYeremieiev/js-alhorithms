@@ -1,1 +1,5 @@
-console.log('Hello World');
+export {noname}
+ 
+function noname(name:string) {
+  return name;
+}
