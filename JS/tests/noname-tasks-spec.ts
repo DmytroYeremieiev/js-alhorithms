@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { } from 'mocha';
+import 'mocha';
 
 import * as nonameTasks from '../src/noname-tasks';
 
