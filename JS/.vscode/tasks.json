@@ -17,6 +17,22 @@
       "problemMatcher": [
         "$tsc-watch"
       ]
+    },
+    {
+      "type": "npm",
+      "label": "test",
+      "script": "test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "label": "watch:test",
+      "script": "watch:test",
+      "problemMatcher": []
     }
   ]
 }

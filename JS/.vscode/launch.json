@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/JS/noname-tasks.ts",
+      "program": "${workspaceFolder}/src/noname-tasks.ts",
       "outFiles": [
         "${workspaceFolder}/**/*.js"
       ]
@@ -23,7 +23,7 @@
           "-u", "tdd",
           "--timeout", "999999",
           "--colors", "--recursive",
-          "${workspaceFolder}/JS/tests/**/*.ts"
+          "${workspaceFolder}/tests/**/*.ts"
       ],
       "internalConsoleOptions": "openOnSessionStart"
     }
