@@ -1,13 +1,17 @@
 {
-  "name": "some-tasks-in-typescript",
+  "name": "typescript-tests-and-playground",
   "version": "1.0.0",
   "description": "testing and educational  project ",
   "main": "noname-tasks.js",
   "directories": {
-    "test": "tests"
+    "test": "tests",
+    "src": "tests"
   },
   "scripts": {
-    "test": "mocha --require ts-node/register tests/**/*.ts"
+    "build": "tsc --pretty",
+    "watch": "npm run build -- --watch",
+    "test": "mocha --require ts-node/register \"tests/*.ts\"",
+    "watch:test": "npm run watch & npm run test -- --watch-extensions ts --watch"
   },
   "author": "DmitryYeremieiev",
   "license": "ISC",
