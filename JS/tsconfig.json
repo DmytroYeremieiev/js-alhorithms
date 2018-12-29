@@ -11,7 +11,8 @@
     "noFallthroughCasesInSwitch": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    // "suppressImplicitAnyIndexErrors": true //Suppress noImplicitAny errors for indexing objects lacking index signatures.
   },
   "include": [
     "src/**/*",
