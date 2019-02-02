@@ -10,7 +10,7 @@
       "name": "Launch Program",
       "program": "${workspaceFolder}/src/noname-tasks.ts",
       "outFiles": [
-        "${workspaceFolder}/**/*.js"
+        "${workspaceFolder}/dest/**/*.js"
       ]
     },
     {
