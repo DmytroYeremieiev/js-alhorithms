@@ -5,7 +5,9 @@
   "tasks": [
     {
       "type": "typescript",
+      "label": "build",
       "tsconfig": "tsconfig.json",
+      "group": "build",
       "problemMatcher": [
         "$tsc"
       ]
@@ -13,7 +15,13 @@
     {
       "type": "typescript",
       "tsconfig": "tsconfig.json",
+      "label": "watch",
       "option": "watch",
+      // "group": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "problemMatcher": [
         "$tsc-watch"
       ]
@@ -32,6 +40,7 @@
       "type": "npm",
       "label": "watch:test",
       "script": "watch:test",
+      "group": "test",
       "problemMatcher": []
     }
   ]

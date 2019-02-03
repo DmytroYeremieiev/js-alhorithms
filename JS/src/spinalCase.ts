@@ -15,3 +15,5 @@ export function spinalCase(str:string) : string {
   }
   return resultArr.join('')
 }
+
+spinalCase("jnjnj 11")
