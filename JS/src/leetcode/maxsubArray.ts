@@ -8,5 +8,28 @@ Explanation: [4,-1,2,1] has the largest sum = 6. */
  * @return {number}
  */
 export function maxsubArray(nums: number[]) {
-  return 6;
+  let min = 0, max = 0, accum = 0, curr, next;
+  //[-2, -1]; => -1;
+  //[-2, -3, -1]; => -1;
+  //[8,-19,5,-4,20]; => 21
+  for (let i = 0; i < nums.length; i++) {
+    curr = nums[i];
+    next = nums[i+1];
+    if (curr < min) min = curr;
+    if (curr > max) max = curr;
+
+    accum += curr;
+    console.log(`curr: ${curr},   min: ${min}, max: ${max}, accum: ${accum}`);
+
+    if (accum > max) {
+      max = accum;
+    }
+    if (accum <= min) {
+      accum = 0;
+    } else {
+      min = accum;
+    }
+
+  }
+  return max;
 }
