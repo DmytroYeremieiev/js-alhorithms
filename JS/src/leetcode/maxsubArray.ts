@@ -11,8 +11,8 @@ export function maxsubArray(nums: number[]) {
   let min = nums[0], max = nums[0], accum = 0, curr, next;
   //[-2, -1]; => -1;
   //[-2, -3, -1]; => -1;
-  //[8,-19,5,-4,20]; => 21;
-  //[1,2,-1,-2,2,1,-2,1,4,-5,4] => 6;
+  //[8,-19,5,-4,20]; => 21 => [5,-4,20];
+  //[1,2,-1,-2,   2,1,-2,1,4,   -5,4] => 6 => [2,1,-2,1,4];
   for (let i = 0; i < nums.length; i++) {
     curr = nums[i];
     next = nums[i+1];
@@ -30,7 +30,7 @@ export function maxsubArray(nums: number[]) {
       max = accum;
     }
     if (accum < min) {
-      accum = 0;
+      // accum = 0;
     } else {
       min = accum;
     }
@@ -42,4 +42,4 @@ export function maxsubArray(nums: number[]) {
   return max;
 }
 
-maxsubArray([8, -19,5,-4, 20]);
+maxsubArray([1,2,-1,-2,2,1,-2,1,4,-5,4]);
