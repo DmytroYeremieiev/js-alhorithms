@@ -11,7 +11,9 @@
     "build": "tsc --pretty",
     "watch": "npm run build -- --watch",
     "test": "mocha --require ts-node/register \"tests/*.ts\"",
-    "watch:test": "npm run watch & npm run test -- --watch-extensions ts --watch"
+    "test:leetcode": "mocha --require ts-node/register \"tests/leetcode/*.ts\"",
+    "watch:test": "npm run watch & npm run test -- --watch-extensions ts --watch",
+    "watch:test:leetcode": "npm run watch & npm run test:leetcode -- --watch-extensions ts --watch"
   },
   "author": "DmitryYeremieiev",
   "license": "ISC",
