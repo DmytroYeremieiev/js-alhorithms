@@ -11,7 +11,8 @@ export function maxsubArray(nums: number[]) {
   let min = nums[0], max = nums[0], accum = 0, curr, next;
   //[-2, -1]; => -1;
   //[-2, -3, -1]; => -1;
-  //[8,-19,5,-4,20]; => 21
+  //[8,-19,5,-4,20]; => 21;
+  //[1,2,-1,-2,2,1,-2,1,4,-5,4] => 6;
   for (let i = 0; i < nums.length; i++) {
     curr = nums[i];
     next = nums[i+1];
@@ -23,8 +24,8 @@ export function maxsubArray(nums: number[]) {
     }
 
     accum += curr;
-    console.log(`curr: ${curr},   min: ${min}, max: ${max}, accum: ${accum}`);
-
+    console.log(`curr: ${curr},   min: ${min}, max: ${max}, accum: ${accum}, ${accum + next}`);
+    
     if (accum > max) {
       max = accum;
     }
@@ -33,6 +34,12 @@ export function maxsubArray(nums: number[]) {
     } else {
       min = accum;
     }
+    if ((accum + next) < min){
+      console.log("braekpoint: ", curr);
+      accum = curr;
+    }
   }
   return max;
 }
+
+maxsubArray([8, -19,5,-4, 20]);
