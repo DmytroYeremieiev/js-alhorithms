@@ -59,6 +59,22 @@
         "--recursive",
         "${workspaceFolder}/tests/**/*.ts"
       ]
+    },
+    {
+      "label": "npm run tests ${file}",
+      "command": "npm",
+      "args": [
+        "run", "test",
+        "--", "${file}"
+      ]
+    },
+    {
+      "label": "npm watch tests ${file}",
+      "command": "npm",
+      "args": [
+        "run", "watch:test",
+        "--", "${file}"
+      ]
     }
   ]
 }
