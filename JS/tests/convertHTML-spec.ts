@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import 'mocha'
 
 import {convertHTML} from '../src/convertHTML';
 

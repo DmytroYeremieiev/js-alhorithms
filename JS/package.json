@@ -2,15 +2,10 @@
   "name": "typescript-tests-and-playground",
   "version": "1.0.0",
   "description": "testing and educational  project ",
-  "main": "noname-tasks.js",
-  "directories": {
-    "test": "tests",
-    "src": "tests"
-  },
   "scripts": {
     "build": "tsc --pretty",
     "watch": "npm run build -- --watch",
-    "test": "mocha --require ts-node/register \"tests/*.ts\"",
+    "test": "mocha --require ts-node/register",
     "test:leetcode": "mocha --require ts-node/register \"tests/leetcode/*.ts\"",
     "watch:test": "npm run watch & npm run test -- --watch-extensions ts --watch",
     "watch:test:leetcode": "npm run watch & npm run test:leetcode -- --watch-extensions ts --watch"
@@ -19,7 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5",
+    "@types/mocha": "^5.2.6",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "ts-node": "^7.0.1",

@@ -7,41 +7,58 @@
       "type": "typescript",
       "label": "build",
       "tsconfig": "tsconfig.json",
-      "group": "build",
       "problemMatcher": [
         "$tsc"
-      ]
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
       "type": "typescript",
       "tsconfig": "tsconfig.json",
       "label": "watch",
       "option": "watch",
-      // "group": "build",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "group": "build",
       "problemMatcher": [
         "$tsc-watch"
       ]
     },
     {
-      "type": "npm",
-      "label": "test",
-      "script": "test",
-      "group": {
-        "kind": "test",
-        "isDefault": true
-      },
-      "problemMatcher": []
+      "type": "process",
+      "label": "Mocha watch ${file}",
+      "command": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--require",
+        "ts-node/register",
+        // "-u",
+        // "tdd",
+        // "--timeout",
+        // "999999",
+        "--colors",
+        "--recursive",
+        "${file}",
+        "--watch-extensions",
+        "ts",
+        "--watch",
+      ]
     },
     {
-      "type": "npm",
-      "label": "watch:test",
-      "script": "watch:test",
-      "group": "test",
-      "problemMatcher": []
+      "type": "process",
+      "label": "Mocha Run tests",
+      "command": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--recursive",
+        "${workspaceFolder}/tests/**/*.ts"
+      ]
     }
   ]
 }
