@@ -24,7 +24,7 @@ Mocha can't run typescript by itself, it needs typescript compiler and the packa
 },
 ```
 
-Note, the `--require ts-node/register` is the important bit here. It registers TypeScript as an compiler. Notice we didn't specified the files to watch. This customisatio is left for other tools(vs code tasks) and scripts which will be passing file pattern as an extention, delimited by `--`: `npm run test -- './tests/**/*.ts'` 
+Note, the `--require ts-node/register` is the important bit here. It registers TypeScript as an compiler. Notice we didn't specified the files to watch. This customisation was left for other tools(vs code tasks) and scripts which will be passing file pattern as an extention, delimited by `--`, `npm run test -- './tests/**/*.ts'` 
 
 Note, we can easily invoke npm scripts from others npm scripts with `npm run <script_name>`,but in order to  pass some custom arguments, the special option has to be used `--`. "*The special option `--` is used by `getopt` to delimit the end of the options. npm will pass all the arguments after the -- directly to your script"*. Basically, running `npm run build -- --watch` will be the same as running `tsc --pretty --watch`.
 
