@@ -38,10 +38,10 @@
         // "999999",
         "--colors",
         "--recursive",
-        "${file}",
         "--watch-extensions",
         "ts",
         "--watch",
+        "${file}"
       ]
     },
     {
@@ -64,16 +64,20 @@
       "label": "npm run tests ${file}",
       "command": "npm",
       "args": [
-        "run", "test",
-        "--", "${file}"
+        "run",
+        "test",
+        "--",
+        "${file}"
       ]
     },
     {
       "label": "npm watch tests ${file}",
       "command": "npm",
       "args": [
-        "run", "watch:test",
-        "--", "${file}"
+        "run",
+        "watch:test",
+        "--",
+        "${file}"
       ]
     }
   ]
