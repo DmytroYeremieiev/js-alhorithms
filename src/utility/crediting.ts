@@ -2,7 +2,7 @@ const uahToUSD_initial = 26.5;
 const CAR_COST_UAH = 907000;
 const DOWNPAYMENT_UAH = 140000;
 
-const toUSD = (value: number, uahToUSD_rate = uahToUSD_initial) => value / uahToUSD_rate;
+export const toUSD = (value: number, uahToUSD_rate = uahToUSD_initial) => value / uahToUSD_rate;
 
 export class Prospect {
   lifeInsurrance_perc = 0.0199;
@@ -33,6 +33,8 @@ export class Prospect {
     const debt_uah_per_period = this.debt_uah * periodRatio;
     console.log('periodRatio: ', periodRatio, ', ', 'debt_uah_per_period: ', debt_uah_per_period, '\n');
     for (const usdToUahRate of this.strategy) {
+      console.log('toUSD(debt_uah_per_period, usdToUahRate)', toUSD(debt_uah_per_period, usdToUahRate));
+
       result += toUSD(debt_uah_per_period, usdToUahRate);
     }
     return result;
