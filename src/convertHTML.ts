@@ -1,7 +1,7 @@
 /* Convert the characters &, <, >, " (double quote), and ' (apostrophe),
 in a string to their corresponding HTML entities. */
-export function convertHTML(str:string) : string {
-  return str
+export function convertHTML(str: string): string {
+  return str;
 }
 
-convertHTML("Dolce & Gabbana")
+convertHTML('Dolce & Gabbana');

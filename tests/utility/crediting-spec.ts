@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 
-import {calc} from '../../src/utility/crediting';
+import { Prospect } from '../../src/utility/crediting';
 
 describe('crediting', () => {
-  it('should return a "this-is-spinal-tap"', () => {
-    // var result = calc("This Is Spinal Tap");
-    // expect(result).to.be.equal("this-is-spinal-tap");
+  it('should e a single number"', () => {
+    const result = new Prospect(0.0599, [26.5, 26.5, 26.5, 26.5], 907000, 0.15);
+    expect(result).to.be.a('number');
   });
 });

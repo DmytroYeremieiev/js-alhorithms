@@ -5,8 +5,8 @@ Every additional number in the sequence is the sum of the two previous numbers.
 The first six numbers of the Fibonacci sequence are 1, 1, 2, 3, 5 and 8.
 
 For example, sumFibs(10) should return 10 because all odd Fibonacci numbers less than or equal to 10 are 1, 1, 3, and 5. */
-export function sumFibs(num:number) : number {
+export function sumFibs(num: number): number {
   return num;
 }
 
-sumFibs(4)
+sumFibs(4);

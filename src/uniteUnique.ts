@@ -3,8 +3,8 @@
 In other words, all values present from all arrays should be included in their original order, but with no duplicates in the final array.
 
 The unique numbers should be sorted by their original order, but the final array should not be sorted in numerical order. */
-export function uniteUnique(...arr:any[]) : any[] {
-  return arr
+export function uniteUnique(...arr: any[]): any[] {
+  return arr;
 }
 
-uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1])
+uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]);
