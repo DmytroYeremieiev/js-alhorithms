@@ -6,15 +6,24 @@
     "build": "tsc --pretty",
     "watch": "npm run build -- --watch",
     "test": "mocha --require ts-node/register",
-    "watch:test": "npm run test -- --watch-extensions ts --watch"
+    "watch:test": "npm run test -- --watch-extensions ts --watch",
+    "lint": "eslint -c .eslintrc.js --ignore-pattern '**/build/*'",
+    "lint:all": "yarn lint -- '**/*.{ts,tsx}'",
+    "lint:all:fix": "yarn lint:all -- --fix"
   },
   "author": "DmitryYeremieiev",
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "^4.2.3",
     "@types/mocha": "^5.2.7",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
     "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "mocha": "^5.2.0",
+    "prettier": "^1.19.1",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.4"
   }
