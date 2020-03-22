@@ -1,6 +1,4 @@
 const uahToUSD_initial = 26.5;
-const CAR_COST_UAH = 907000;
-const DOWNPAYMENT_UAH = 140000;
 
 export const toUSD = (value: number, uahToUSD_rate = uahToUSD_initial) => value / uahToUSD_rate;
 
@@ -10,6 +8,8 @@ export class Prospect {
   strategy: Array<number>;
 
   totalCost_uah: number;
+  govTaxes_uah: number;
+  bankComission_uah: number;
   initialPayment_perc: number;
   intialPayment_uah: number;
 
@@ -26,58 +26,49 @@ export class Prospect {
 
     this.loan_uah = this.totalCost_uah - this.intialPayment_uah;
     this.debt_uah = this.loan_uah + this.loan_uah * this.interestRate_perc + this.loan_uah * this.lifeInsurrance_perc;
+    // console.log(
+    //   'this.debth',
+    //   this.debt_uah,
+    //   this.loan_uah * this.interestRate_perc,
+    //   this.loan_uah * this.lifeInsurrance_perc
+    // );
+    this.govTaxes_uah = this.totalCost_uah * 0.05;
+    this.bankComission_uah = this.totalCost_uah * 0.0199; // one time comission
   }
   getDebtInUSD() {
     let result = 0;
     const periodRatio = 1 / this.strategy.length;
     const debt_uah_per_period = this.debt_uah * periodRatio;
-    console.log('periodRatio: ', periodRatio, ', ', 'debt_uah_per_period: ', debt_uah_per_period, '\n');
+    // console.log('periodRatio: ', periodRatio, ', ', 'debt_uah_per_period: ', debt_uah_per_period, '\n');
     for (const usdToUahRate of this.strategy) {
-      console.log('toUSD(debt_uah_per_period, usdToUahRate)', toUSD(debt_uah_per_period, usdToUahRate));
+      // console.log('toUSD(debt_uah_per_period, usdToUahRate)', toUSD(debt_uah_per_period, usdToUahRate));
 
       result += toUSD(debt_uah_per_period, usdToUahRate);
     }
     return result;
   }
+  getTotalCostWithTaxes() {
+    const debt_prospect_usd = this.getDebtInUSD();
+    const total =
+      toUSD(this.intialPayment_uah) + toUSD(this.govTaxes_uah) + toUSD(this.bankComission_uah) + debt_prospect_usd;
+    return total;
+  }
 }
 
-const getP = (prospects: Array<number>, credited: number) => {
-  // periods [30, 35, 40, 45];
-  const periodRatio = 1 / prospects.length;
-  const sumPerPeriod = credited * periodRatio;
-  console.log('periodRatio: ', periodRatio, ', ', 'sumPerPeriod: ', sumPerPeriod, '\n');
-  let result = 0;
-  for (const p of prospects) {
-    result += sumPerPeriod / p;
-  }
-  return result;
-};
+let prospect = new Prospect(0.0199, [30, 30, 35, 35], 907800, 0.15);
+console.log('0.0199, [30, 30, 35, 35]: ', prospect.getTotalCostWithTaxes());
 
-export const calc = (prospects: Array<number>, CAR_COST_UAH: number, DOWNPAYMENT_UAH: number, BANK_RATE: number) => {
-  console.log('\nProspects for ', JSON.stringify(prospects), ',\n');
-  const CREDIT_UAH = CAR_COST_UAH - DOWNPAYMENT_UAH;
-  const TAXES_UAH = CAR_COST_UAH * 0.05;
-  const BANK_COMMISION_UAH = CREDIT_UAH * BANK_RATE;
+prospect = new Prospect(0.0199, [30, 35, 40, 45], 907800, 0.15);
+console.log('0.0199, [30, 35, 40, 45]: ', prospect.getTotalCostWithTaxes());
 
-  console.log('DOWNPAYMENT: ', DOWNPAYMENT_UAH, ', TAXES: ', TAXES_UAH, ', BANK_COMMISION: ', BANK_COMMISION_UAH);
+prospect = new Prospect(0.0599, [30, 35, 40, 45, 45, 50, 50, 55], 907800, 0.15);
+console.log('0.0599, [30, 35, 40, 45, 45, 50, 50, 55]: ', prospect.getTotalCostWithTaxes());
 
-  const DOWNPAYMENT_USD = toUSD(DOWNPAYMENT_UAH),
-    TAXES_USD = toUSD(TAXES_UAH),
-    BANK_COMMISION_USD = toUSD(BANK_COMMISION_UAH);
+prospect = new Prospect(0.0599, [30, 35, 40, 45, 50, 55, 60, 65], 907800, 0.15);
+console.log('0.0599, [30, 35, 40, 45, 50, 55, 60, 65]: ', prospect.getTotalCostWithTaxes());
 
-  const result = DOWNPAYMENT_USD + TAXES_USD + BANK_COMMISION_USD + getP(prospects, CREDIT_UAH);
+prospect = new Prospect(0.0599, [30, 35, 40, 45, 50, 55, 60, 65, 70], 907800, 0.15);
+console.log('0.0599, [30, 35, 40, 45, 50, 55, 60, 65, 70]: ', prospect.getTotalCostWithTaxes());
 
-  console.log('Total in usd: ', result);
-};
-
-// calc([26.5, 26.5, 26.5, 26.5], CAR_COST_UAH, DOWNPAYMENT_UAH, 0.0001 + 0.0199); // TEST, must return 36516
-
-// calc([30, 30, 35, 35], CAR_COST_UAH, DOWNPAYMENT_UAH, 0.0001 + 0.0199);
-
-// calc([30, 35, 40, 45], CAR_COST_UAH, DOWNPAYMENT_UAH, 0.0001 + 0.0199);
-
-// calc([30, 30, 35, 35], CAR_COST_UAH, DOWNPAYMENT_UAH, 0.0599 + 0.0199);
-// calc([30, 35, 40, 45, 45, 50, 50, 55], CAR_COST_UAH, DOWNPAYMENT_UAH, 0.0599 + 0.0199);
-// calc([30, 35, 40, 45, 50, 55, 60, 65], CAR_COST_UAH, DOWNPAYMENT_UAH, 0.0599 + 0.0199);
-
-// calc([30, 35, 40, 45, 50, 55, 60, 65, 70], CAR_COST_UAH, DOWNPAYMENT_UAH, 0.0899 + 0.0199);
+prospect = new Prospect(0.0899, [30, 35, 40, 45, 50, 55, 60, 65, 70], 907800, 0.15);
+console.log('0.0899, [30, 35, 40, 45, 50, 55, 60, 65, 70]: ', prospect.getTotalCostWithTaxes());

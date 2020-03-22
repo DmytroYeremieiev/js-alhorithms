@@ -26,4 +26,12 @@ describe('crediting', () => {
     const prospect = new Prospect(0.0599, [26.5, 26.5, 26.5, 26.5], 907800, 0.15);
     expect(prospect.debt_uah).to.be.equal(833206.074);
   });
+  it('debt_uah should be equal to 787062.6"', () => {
+    const prospect = new Prospect(0.0001, [26.5, 26.5, 26.5, 26.5], 907800, 0.15);
+    expect(prospect.debt_uah).to.be.equal(787062.6);
+  });
+  it('total in usd for [26.5, 26.5, 26.5, 26.5] prospect should be equal to 37233.50264150943"', () => {
+    const prospect = new Prospect(0.0001, [26.5, 26.5, 26.5, 26.5], 907800, 0.15);
+    expect(prospect.getTotalCostWithTaxes()).to.be.equal(37233.50264150943);
+  });
 });
