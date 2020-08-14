@@ -9,22 +9,24 @@ export function mergeSort(arr: Array<number>): Array<number> {
   let l_Indx = 0,
     r_Indx = 0;
   for (let index = 0; index < arr.length; index++) {
-    if (leftPartArr[l_Indx] < rightPartArr[r_Indx]) {
+    const reachedEndOfLeft = leftPartArr.length <= l_Indx;
+    const reachedEndOfRight = rightPartArr.length <= r_Indx;
+
+    if ((leftPartArr[l_Indx] < rightPartArr[r_Indx] && !reachedEndOfLeft) || reachedEndOfRight) {
       result[index] = leftPartArr[l_Indx];
-      if (leftPartArr.length - 1 > l_Indx) {
+
+      if (!reachedEndOfLeft) {
         l_Indx++;
-      } else {
-        result[index + 1] = rightPartArr[r_Indx];
-        break;
       }
-    } else {
+      continue;
+    }
+    if ((leftPartArr[l_Indx] >= rightPartArr[r_Indx] && !reachedEndOfRight) || reachedEndOfLeft) {
       result[index] = rightPartArr[r_Indx];
-      if (rightPartArr.length - 1 > r_Indx) {
+
+      if (!reachedEndOfRight) {
         r_Indx++;
-      } else {
-        result[index + 1] = leftPartArr[l_Indx];
-        break;
       }
+      continue;
     }
   }
   return result;
