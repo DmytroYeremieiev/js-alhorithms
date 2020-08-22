@@ -3,7 +3,7 @@ export function countInversions(arr: Array<number>): { arr: Array<number>; inver
   if (arr.length === 1) {
     return { arr: arr, inversions: 0 };
   }
-  const resultArr = Array.of(6);
+  const resultArr = Array(arr.length);
   const { arr: leftPartArr, inversions: leftSideInversions } = countInversions(arr.slice(0, arr.length / 2));
   const { arr: rightPartArr, inversions: rightSideInversions } = countInversions(arr.slice(arr.length / 2, arr.length));
   let l_Indx = 0,
