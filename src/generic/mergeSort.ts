@@ -1,4 +1,4 @@
-export function mergeSort<T>(arr: Array<T>, selector: (item: T) => T): Array<T> {
+export function mergeSort<T>(arr: Array<T>, selector: (item: T) => any): Array<T> {
   console.log('subproblem', arr);
   if (arr.length === 1) {
     return arr;
