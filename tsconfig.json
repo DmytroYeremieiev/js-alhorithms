@@ -4,7 +4,7 @@
     "module": "commonjs",
     "target": "es2016",
     "jsx": "preserve",
-    "sourceMap": true,  
+    "sourceMap": true,
     "outDir": "build/",
     "strict": true,
     "noUnusedLocals": false,
@@ -18,10 +18,7 @@
     "watch": false,
     // "watch": true
     // "suppressImplicitAnyIndexErrors": true //Suppress noImplicitAny errors for indexing objects lacking index signatures.
-  }
-  ,
-  "include": [
-    "src/**/*",
-    "tests/**/*-spec.ts"
-  ]
+    "baseUrl": "./"
+  },
+  "include": ["src/**/*", "tests/**/*-spec.ts"]
 }

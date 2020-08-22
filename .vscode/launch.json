@@ -10,9 +10,7 @@
       "name": "Launch current file",
       "program": "${file}",
       "preLaunchTask": "build",
-      "outFiles": [
-        "${workspaceFolder}/build/src/**/*.js"
-      ]
+      "outFiles": ["${workspaceFolder}/build/src/**/*.js"]
     },
     {
       "type": "node",
@@ -30,11 +28,15 @@
       "name": "Mocha run all Tests",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
-          "--require", "ts-node/register",
-          "-u", "tdd",
-          "--timeout", "999999",
-          "--colors", "--recursive",
-          "${workspaceFolder}/tests/**/*.ts"
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--recursive",
+        "${workspaceFolder}/tests/**/*.ts"
       ],
       "internalConsoleOptions": "openOnSessionStart"
     },
@@ -44,11 +46,15 @@
       "name": "Mocha ${file}",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
-          "--require", "ts-node/register",
-          "-u", "tdd",
-          "--timeout", "999999",
-          "--colors", "--recursive",
-          "${file}"
+        "--require",
+        "ts-node/register",
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--recursive",
+        "${file}"
       ],
       "internalConsoleOptions": "openOnSessionStart"
     }
