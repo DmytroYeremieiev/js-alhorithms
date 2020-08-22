@@ -7,13 +7,8 @@
       "type": "typescript",
       "label": "build",
       "tsconfig": "tsconfig.json",
-      "problemMatcher": [
-        "$tsc"
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
+      "problemMatcher": ["$tsc"],
+      "group": "build"
     },
     {
       "type": "typescript",
@@ -21,9 +16,7 @@
       "label": "watch",
       "option": "watch",
       "group": "build",
-      "problemMatcher": [
-        "$tsc-watch"
-      ]
+      "problemMatcher": ["$tsc-watch"]
     },
     {
       "type": "process",
@@ -32,10 +25,6 @@
       "args": [
         "--require",
         "ts-node/register",
-        // "-u",
-        // "tdd",
-        // "--timeout",
-        // "999999",
         "--colors",
         "--recursive",
         "--watch-extensions",
@@ -61,24 +50,25 @@
       ]
     },
     {
+      "type": "process",
+      "label": "ts-node run file",
+      "command": "${workspaceFolder}/node_modules/.bin/ts-node",
+      "args": ["--require", "tsconfig-paths/register", "${relativeFile}"],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "npm run tests ${file}",
       "command": "npm",
-      "args": [
-        "run",
-        "test",
-        "--",
-        "${file}"
-      ]
+      "args": ["run", "test", "--", "${file}"]
     },
     {
       "label": "npm watch tests ${file}",
       "command": "npm",
-      "args": [
-        "run",
-        "watch:test",
-        "--",
-        "${file}"
-      ]
+      "args": ["run", "watch:test", "--", "${file}"]
     }
   ]
 }
