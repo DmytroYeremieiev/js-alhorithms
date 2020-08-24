@@ -1,11 +1,14 @@
 // Problem 3.3 You are given a sorted (from smallest to largest) array A of n distinct integers which can be positive, negative, or zero.
 // You want to decide whether or not there is an index i such that A[i] = i. Design the fastest algorithm you can for solving this problem.
 
-export function searchIndexAsElem(sortedArr: Array<number>, offset = 0): number {
+export function searchIndexAsElem(sortedArr: Array<number>, offset = 0): number | null {
   const middleEl_Indx = Math.floor(sortedArr.length / 2);
   console.log('sortedArr', sortedArr, 'middleEl_Indx: ', middleEl_Indx, ', offset: ', offset);
   if (sortedArr[middleEl_Indx] === offset + middleEl_Indx) {
     return sortedArr[middleEl_Indx];
+  }
+  if (sortedArr.length === 1) {
+    return null;
   }
   let half: Array<number>;
   if (sortedArr[middleEl_Indx] > offset + middleEl_Indx) {
