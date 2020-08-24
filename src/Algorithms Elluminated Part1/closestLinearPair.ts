@@ -1,4 +1,4 @@
-import { mergeSort } from 'src/generic/mergeSort';
+import { mergeSort } from 'src/Algorithms Elluminated Part1/mergeSort';
 
 function closestLinearPair(points: Array<{ x: number; y: number }>): Array<{ x: number; y: number }> {
   const sortedPoints = mergeSort(points, item => {
