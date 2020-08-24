@@ -25,6 +25,8 @@
       "args": [
         "--require",
         "ts-node/register",
+        "--require",
+        "tsconfig-paths/register",
         "--colors",
         "--recursive",
         "--watch-extensions",
