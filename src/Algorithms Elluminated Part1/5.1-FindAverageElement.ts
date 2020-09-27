@@ -30,10 +30,11 @@ export function FindAverageElement(arr: Array<number>): number {
 }
 
 // console.log('r1: ', FindAverageElement([3, 8, 2, 5, 1, 4, 7, 6])); //  4 or 5
-// console.log('r2: ', FindAverageElement([3, 8, 2, 5, 1, 4, 7, 6, 9, 10, 11, 12, 13, 14, 16])); // 8
-// console.log('r3: ', FindAverageElement([14, 3, 13, 8, 9, 2, 12, 5, 1, 11, 4, 7, 6, 10, 16])); // 8
+// console.log('r2: ', FindAverageElement([3, 8, 2, 5, 1, 4, 7, 6, 9, 10, 11, 12, 13, 14, 16])); // 8 or 9
+// console.log('r3: ', FindAverageElement([14, 3, 13, 8, 9, 2, 12, 5, 1, 11, 4, 7, 6, 10, 16])); // 8 or 9
+// console.log('r4: ', FindAverageElement([11, 6, 10, 2, 15, 8, 1, 7, 14, 3, 9, 12, 4, 5, 13])); // 8 or 9
 
-console.log('r4: ', FindAverageElement([1, 20, 3, 4, 8])); // 4
-// console.log('r5: ', FindAverageElement([6, 8, 9, 2, 3])); // 3
-// console.log('r6: ', FindAverageElement([3, 2, 8, 9, 5, 1, 10, 4, 7, 6])); // 5 or 6
-// console.log('r7: ', FindAverageElement([6, 8, 9, 2])); // 6 or 8
+// console.log('r5: ', FindAverageElement([2, 1, 40, 3, 6, 4, 8])); // 4 - 1,2,3,4,6,8,40
+// console.log('r6: ', FindAverageElement([6, 8, 9, 2, 3])); // 3
+// console.log('r7: ', FindAverageElement([3, 2, 8, 9, 5, 1, 10, 4, 7, 6])); // 5 or 6
+// console.log('r8: ', FindAverageElement([6, 8, 9, 2])); // 6 or 8
