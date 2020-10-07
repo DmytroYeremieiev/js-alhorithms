@@ -1,27 +1,39 @@
-export function Partition(arr: Array<number>, pivotIndex: number): Array<number> {
-  console.log('before pre-processing step', arr, `,  pivotIndex: ${pivotIndex}`);
+export const Partition = (
+  arr: Array<number>,
+  leftIndex: number,
+  rightIndex: number,
+  pivotIndex: number
+): Array<number> => {
+  console.log('before pre-processing step', arr, `,  pivotIndex: ${pivotIndex}, pivot: ${arr[pivotIndex]}`);
 
-  let i = 1;
-  let temp = arr[0];
-  arr[0] = arr[pivotIndex];
-  arr[pivotIndex] = temp;
-  pivotIndex = 0;
-  console.log('after pre-processing step', arr, `,  pivotIndex: ${pivotIndex}`);
-  for (let j = 1; j < arr.length; j++) {
+  Swap(arr, leftIndex, pivotIndex);
+  pivotIndex = leftIndex;
+
+  console.log('after pre-processing step', arr, `,  pivotIndex: ${pivotIndex}, pivot: ${arr[pivotIndex]}`);
+
+  let i = leftIndex + 1; // remember the last position that an element less than the pivot was placed in
+  let j = leftIndex + 1; // scanner, from left to right-1 boundary(inclusive)
+
+  while (j <= rightIndex) {
     if (arr[j] < arr[pivotIndex]) {
-      console.log('if arr[j] < arr[pivotIndex]', arr, `arr[j]: ${arr[j]}, j: ${j}, i: ${i}`);
-      temp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = temp;
+      console.log(`found element: ${arr[j]} less than the pivot, j: ${j}, i: ${i}`);
+      Swap(arr, i, j);
       i += 1;
     }
+    j += 1;
   }
-  console.log('after look: ', arr, i);
-  temp = arr[i - 1];
-  arr[i - 1] = arr[pivotIndex];
-  arr[pivotIndex] = temp;
-  console.log('final result: ', arr, i);
+  console.log('after loop: ', arr, `i: ${i}`);
+  Swap(arr, i - 1, pivotIndex);
+  console.log('final result: ', arr, `i: ${i}`);
   return arr;
-}
+};
 
-console.log('r1', Partition([3, 8, 2, 5, 1, 4, 7, 6], 2));
+const Swap = (arr: Array<number>, firstIndex: number, secondIndex: number) => {
+  const temp = arr[firstIndex];
+  arr[firstIndex] = arr[secondIndex];
+  arr[secondIndex] = temp;
+};
+
+console.log('r1', Partition([3, 8, 2, 5, 1, 4, 7, 6], 0, 7, 5));
+// console.log('r1', Partition([3, 8, 2, 5, 1, 4, 7, 6], 5, 7, 7));
+// console.log('r1', Partition([3, 8, 2, 5, 1, 4, 7, 6], 0, 3, 3));
