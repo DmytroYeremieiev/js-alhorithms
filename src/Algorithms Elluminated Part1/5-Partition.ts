@@ -4,27 +4,27 @@ export const Partition = (
   rightIndex: number,
   pivotIndex: number
 ): Array<number> => {
-  console.log('before pre-processing step', arr, `,  pivotIndex: ${pivotIndex}, pivot: ${arr[pivotIndex]}`);
+  // console.log('before pre-processing step', arr, `,  pivotIndex: ${pivotIndex}, pivot: ${arr[pivotIndex]}`);
 
   Swap(arr, leftIndex, pivotIndex);
   pivotIndex = leftIndex;
 
-  console.log('after pre-processing step', arr, `,  pivotIndex: ${pivotIndex}, pivot: ${arr[pivotIndex]}`);
+  // console.log('after pre-processing step', arr, `,  pivotIndex: ${pivotIndex}, pivot: ${arr[pivotIndex]}`);
 
   let i = leftIndex + 1; // remember the last position that an element less than the pivot was placed in
   let j = leftIndex + 1; // scanner, from left to right-1 boundary(inclusive)
 
   while (j <= rightIndex) {
     if (arr[j] < arr[pivotIndex]) {
-      console.log(`found element: ${arr[j]} less than the pivot, j: ${j}, i: ${i}`);
+      // console.log(`found element: ${arr[j]} less than the pivot, j: ${j}, i: ${i}`);
       Swap(arr, i, j);
       i += 1;
     }
     j += 1;
   }
-  console.log('after loop: ', arr, `i: ${i}`);
+  // console.log('after loop: ', arr, `i: ${i}`);
   Swap(arr, i - 1, pivotIndex);
-  console.log('final result: ', arr, `i: ${i}`);
+  // console.log('final result: ', arr, `i: ${i}`);
   return arr;
 };
 
