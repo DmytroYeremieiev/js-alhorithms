@@ -6,44 +6,42 @@
 import { Edge, DirectedGraph, Vertex } from '../DirectedGraph';
 
 const S: Vertex = {
-  name: 'A',
+  id: 'S',
+  out_edges: ['SU', 'SV'],
 };
 const U: Vertex = {
-  name: 'U',
+  id: 'U',
+  out_edges: ['UV'],
+  in_edges: ['SU', 'WU'],
 };
 const V: Vertex = {
-  name: 'V',
+  id: 'V',
+  in_edges: ['SV', 'UV', 'WV'],
 };
 const W: Vertex = {
-  name: 'W',
+  id: 'W',
+  out_edges: ['WU', 'WV'],
 };
 
 const X: Vertex = {
-  name: 'X',
+  id: 'X',
+  in_edges: ['YX'],
 };
 const Y: Vertex = {
-  name: 'Y',
+  id: 'Y',
+  out_edges: ['YX'],
 };
 
 const Z: Vertex = {
-  name: 'Y',
+  id: 'Y',
 };
 
-const _SU: Edge = [S, U];
-const _SV: Edge = [S, V];
-const _UV: Edge = [U, V];
-const _WU: Edge = [W, U];
-const _WV: Edge = [W, V];
-const _YX: Edge = [Y, X];
-
-S.out_edges = [_SU, _SV];
-U.out_edges = [_UV];
-U.in_edges = [_SU, _WU];
-V.in_edges = [_SV, _UV, _WV];
-W.out_edges = [_WU, _WV];
-
-X.in_edges = [_YX];
-Y.out_edges = [_YX];
+const _SU: Edge = { id: 'SU', source: 'S', target: 'U' };
+const _SV: Edge = { id: 'SV', source: 'S', target: 'V' };
+const _UV: Edge = { id: 'UV', source: 'U', target: 'V' };
+const _WU: Edge = { id: 'WU', source: 'W', target: 'U' };
+const _WV: Edge = { id: 'W', source: 'W', target: 'V' };
+const _YX: Edge = { id: 'YX', source: 'Y', target: 'X' };
 
 const graph: DirectedGraph = {
   vertices: [S, U, V, W, X, Y, Z],
