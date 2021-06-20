@@ -45,11 +45,32 @@ const _YX: Edge = { id: 'YX', source: 'Y', target: 'X' };
 
 const graph: DirectedGraph = {
   vertices: [S, U, V, W, X, Y, Z],
-  edges: [_SU, _SV, _UV, _WU, _WV, _YX],
+  edges: [_YX, _WV, _WU, _UV, _SV, _SU],
 };
 
-export function findReachableVertices(graph: DirectedGraph, startingVertex: Vertex): Vertex[] {
-  return graph.vertices;
+export function findReachableVertices(graph: DirectedGraph, start: Vertex): Vertex[] {
+  const verticesMap = graph.vertices.reduce((store, vertex) => {
+    store[vertex.id] = vertex;
+    return store;
+  }, {} as { [key: string]: Vertex });
+  start.explored = true;
+  for (let i = 0; i < graph.edges.length; i++) {
+    const edge = graph.edges[i];
+    const source = verticesMap[edge.source];
+    const target = verticesMap[edge.target];
+    console.log(`verifying ${source.id} -> ${target.id} edge: `);
+    if (source.explored && !target.explored) {
+      target.explored = true;
+      console.log(`...target ${target.id} is explored`);
+    } else {
+      console.log(`...target ${target.id} CANNOT BE REACHED!`);
+    }
+  }
+  const reachableVertices = graph.vertices.filter(v => v.explored);
+  return reachableVertices;
 }
 
-console.log('findReachableVertices', findReachableVertices(graph, S));
+console.log(
+  'findReachableVertices',
+  findReachableVertices(graph, S).map(v => v.id)
+);

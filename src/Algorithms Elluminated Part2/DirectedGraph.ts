@@ -10,6 +10,7 @@ export interface Edge {
 export interface Vertex {
   out_edges?: id[];
   in_edges?: id[];
+  explored?: boolean;
   id: id;
 }
 
