@@ -42,7 +42,7 @@ const _SU: Edge = { id: 'SU', source: 'S', target: 'U' };
 const _SV: Edge = { id: 'SV', source: 'S', target: 'V' };
 const _UV: Edge = { id: 'UV', source: 'U', target: 'V' };
 const _WU: Edge = { id: 'WU', source: 'W', target: 'U' };
-const _VW: Edge = { id: 'W', source: 'V', target: 'W' };
+const _VW: Edge = { id: 'VW', source: 'V', target: 'W' };
 const _YX: Edge = { id: 'YX', source: 'Y', target: 'X' };
 
 const graph: DirectedGraph = {
@@ -55,18 +55,27 @@ export function findReachableVertices(graph: DirectedGraph, start: Vertex): Vert
     store[vertex.id] = vertex;
     return store;
   }, {} as { [key: string]: Vertex });
+  const edgesMap = graph.edges.reduce((store, edge) => {
+    store[edge.id] = edge;
+    return store;
+  }, {} as { [key: string]: Edge });
+
   start.explored = true;
-  for (let i = 0; i < graph.edges.length; i++) {
-    const edge = graph.edges[i];
-    const source = verticesMap[edge.source];
-    const target = verticesMap[edge.target];
-    console.log(`verifying ${source.id} -> ${target.id} edge: `);
-    if (source.explored && !target.explored) {
-      target.explored = true;
-      console.log(`...target ${target.id} is explored`);
-    } else {
-      console.log(`...target ${target.id} CANNOT BE REACHED!`);
-    }
+  const queue: Vertex[] = [start];
+  while (queue.length > 0) {
+    const source = queue.shift();
+    console.log(`verifying ${source?.id} out_edges: `);
+    source?.out_edges?.forEach(id => {
+      const edge = edgesMap[id];
+      const target = verticesMap[edge.target];
+      if(!target.explored){
+        target.explored = true;
+        queue.push(target);
+        console.log(`...target ${target.id} marked as explored`);
+      }else{
+        console.log(`...target ${target.id} is already explored`);
+      }
+    });
   }
   const reachableVertices = graph.vertices.filter(v => v.explored);
   return reachableVertices;
