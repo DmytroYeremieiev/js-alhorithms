@@ -61,16 +61,16 @@ export function findReachableVertices(graph: DirectedGraph, start: Vertex): Vert
   }, {} as { [key: string]: Edge });
 
   start.explored = true;
-  const queue: Vertex[] = [start];
-  while (queue.length > 0) {
-    const source = queue.shift();
+  const reachableVertexQueue: Vertex[] = [start];
+  while (reachableVertexQueue.length > 0) {
+    const source = reachableVertexQueue.shift();
     console.log(`verifying ${source?.id} out_edges: `);
     source?.out_edges?.forEach(id => {
       const edge = edgesMap[id];
       const target = verticesMap[edge.target];
       if(!target.explored){
         target.explored = true;
-        queue.push(target);
+        reachableVertexQueue.push(target);
         console.log(`...target ${target.id} marked as explored`);
       }else{
         console.log(`...target ${target.id} is already explored`);
