@@ -7,47 +7,45 @@ import { Edge, UndirectedVertex, UndirectedGraph } from '../Graph';
 
 const S: UndirectedVertex = {
   id: 'S',
-  edges: ['SU', 'SV'],
+  edges: ['SA', 'SB'],
 };
-const U: UndirectedVertex = {
-  id: 'U',
-  edges: ['UV'],
+const A: UndirectedVertex = {
+  id: 'A',
+  edges: ['AS', 'AC'],
 };
-const V: UndirectedVertex = {
-  id: 'V',
-  edges: ['VW'],
+const B: UndirectedVertex = {
+  id: 'B',
+  edges: ['BS', 'BC', 'BD'],
 };
-const W: UndirectedVertex = {
-  id: 'W',
-  edges: ['WU'],
-};
-
-const X: UndirectedVertex = {
-  id: 'X',
-  edges: ['YX'],
-};
-const Y: UndirectedVertex = {
-  id: 'Y',
-  edges: ['YX'],
+const C: UndirectedVertex = {
+  id: 'C',
+  edges: ['CA', 'CB', 'CD', 'CE'],
 };
 
-const Z: UndirectedVertex = {
-  id: 'Y',
+const D: UndirectedVertex = {
+  id: 'D',
+  edges: ['DB', 'DC', 'DE'],
+};
+const E: UndirectedVertex = {
+  id: 'E',
+  edges: ['EC', 'ED'],
 };
 
-const _SU: Edge = { id: 'SU', source: 'S', target: 'U' };
-const _SV: Edge = { id: 'SV', source: 'S', target: 'V' };
-const _UV: Edge = { id: 'UV', source: 'U', target: 'V' };
-const _WU: Edge = { id: 'WU', source: 'W', target: 'U' };
-const _VW: Edge = { id: 'VW', source: 'V', target: 'W' };
-const _YX: Edge = { id: 'YX', source: 'Y', target: 'X' };
+const SA: Edge = { id: 'SA', source: 'S', target: 'A' };
+const SB: Edge = { id: 'SB', source: 'S', target: 'B' };
+const AC: Edge = { id: 'AC', source: 'A', target: 'C' };
+const BC: Edge = { id: 'BC', source: 'B', target: 'C' };
+const BD: Edge = { id: 'BD', source: 'B', target: 'D' };
+const DC: Edge = { id: 'DC', source: 'D', target: 'C' };
+const EC: Edge = { id: 'EC', source: 'E', target: 'C' };
+const ED: Edge = { id: 'ED', source: 'E', target: 'D' };
 
 const graph: UndirectedGraph = {
-  vertices: [S, U, V, W, X, Y, Z],
-  edges: [_YX, _VW, _WU, _UV, _SV, _SU],
+  vertices: [S, A, B, C, D, E],
+  edges: [SA, SB, AC, BC, BD, DC, EC, ED],
 };
 
-export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph, start: UndirectedVertex): UndirectedVertex[] {
+export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph, startVertex: UndirectedVertex): UndirectedVertex[] {
   const verticesMap = graph.vertices.reduce((store, vertex) => {
     store[vertex.id] = vertex;
     return store;
@@ -57,14 +55,17 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
     return store;
   }, {} as { [key: string]: Edge });
 
-  start.explored = true;
-  const reachableVertexQueue: UndirectedVertex[] = [start];
+  startVertex.explored = true;
+  const reachableVertexQueue: UndirectedVertex[] = [startVertex];
   while (reachableVertexQueue.length > 0) {
-    const source = reachableVertexQueue.shift();
-    console.log(`verifying ${source?.id} out_edges: `);
-    source?.edges?.forEach(id => {
-      const edge = edgesMap[id];
-      const target = verticesMap[edge.target];
+    const sourceVertex = reachableVertexQueue.shift();
+    console.log(`verifying ${sourceVertex?.id} edges: `);
+    sourceVertex?.edges?.forEach(edgeId => {
+      const edge = edgesMap[edgeId];
+      const targetVertex = verticesMap[edge.target];
+      if(targetVertex.id === sourceVertex.id) {
+        
+      }
       if(!target.explored){
         target.explored = true;
         reachableVertexQueue.push(target);

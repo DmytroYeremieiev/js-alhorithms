@@ -17,17 +17,16 @@ export interface DirectedVertex extends Vertex {
   in_edges?: id[];
 }
 
-export interface DirectedGraph {
-  vertices: DirectedVertex[];
-  edges: Edge[];
-}
-
 export interface UndirectedVertex extends Vertex {
   edges?: id[];
   explored?: boolean;
   id: id;
 }
 
+export interface DirectedGraph {
+  vertices: DirectedVertex[];
+  edges: Edge[];
+}
 export interface UndirectedGraph {
   vertices: UndirectedVertex[];
   edges: Edge[];
