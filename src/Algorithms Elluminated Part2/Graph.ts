@@ -1,4 +1,4 @@
-type id = string;
+type id = string | number;
 
 export interface Edge {
   weight?: number;

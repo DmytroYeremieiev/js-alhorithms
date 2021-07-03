@@ -7,42 +7,42 @@ import { UndirectedEdge, UndirectedVertex, UndirectedGraph } from '../Graph';
 
 const S: UndirectedVertex = {
   id: 'S',
-  edges: ['SA', 'SB'],
+  edges: ['1', '3'],
 };
 const A: UndirectedVertex = {
   id: 'A',
-  edges: ['AS', 'AC'],
+  edges: ['1', '2'],
 };
 const B: UndirectedVertex = {
   id: 'B',
-  edges: ['BS', 'BC', 'BD'],
+  edges: ['3', '4', '5'],
 };
 const C: UndirectedVertex = {
   id: 'C',
-  edges: ['CA', 'CB', 'CD', 'CE'],
+  edges: ['2', '8', '4', '6'],
 };
 
 const D: UndirectedVertex = {
   id: 'D',
-  edges: ['DB', 'DC', 'DE'],
+  edges: ['5', '6', '7'],
 };
 const E: UndirectedVertex = {
   id: 'E',
-  edges: ['EC', 'ED'],
+  edges: ['8', '7'],
 };
 
-const SA: UndirectedEdge = { id: 'SA', vertices: ['A', 'S'] };
-const SB: UndirectedEdge = { id: 'SB', vertices: ['B', 'S'] };
-const AC: UndirectedEdge = { id: 'AC', vertices: ['A', 'C'] };
-const BC: UndirectedEdge = { id: 'BC', vertices: ['C', 'B'] };
-const BD: UndirectedEdge = { id: 'BD', vertices: ['B', 'D'] };
-const DC: UndirectedEdge = { id: 'DC', vertices: ['D', 'C'] };
-const EC: UndirectedEdge = { id: 'EC', vertices: ['E', 'C'] };
-const ED: UndirectedEdge = { id: 'ED', vertices: ['E', 'D'] };
+const e1: UndirectedEdge = { id: '1', vertices: ['A', 'S'] };
+const e2: UndirectedEdge = { id: '2', vertices: ['A', 'C'] };
+const e3: UndirectedEdge = { id: '3', vertices: ['S', 'B'] };
+const e4: UndirectedEdge = { id: '4', vertices: ['B', 'C'] };
+const e5: UndirectedEdge = { id: '5', vertices: ['D', 'B'] };
+const e6: UndirectedEdge = { id: '6', vertices: ['C', 'D'] };
+const e7: UndirectedEdge = { id: '7', vertices: ['E', 'D'] };
+const e8: UndirectedEdge = { id: '8', vertices: ['E', 'C'] };
 
 const graph: UndirectedGraph = {
   vertices: [S, A, B, C, D, E],
-  edges: [SA, SB, AC, BC, BD, DC, EC, ED],
+  edges: [e1,e2,e3,e4,e5,e6,e7,e8],
 };
 
 export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph, startVertex: UndirectedVertex): UndirectedVertex[] {
@@ -62,16 +62,18 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
     console.log(`verifying ${sourceVertex?.id} edges: `);
     sourceVertex?.edges?.forEach(edgeId => {
       const edge = edgesMap[edgeId];
-      const targetVertex = verticesMap[edge.target];
-      if(targetVertex.id === sourceVertex.id) {
-
-      }
-      if(!target.explored){
-        target.explored = true;
-        reachableVertexQueue.push(target);
-        console.log(`...target ${target.id} marked as explored`);
+      let targetVertex = null
+      if(verticesMap[edge.vertices[0]].id === sourceVertex.id) {
+        targetVertex = verticesMap[edge.vertices[1]]
       }else{
-        console.log(`...target ${target.id} is already explored`);
+        targetVertex = verticesMap[edge.vertices[0]]
+      }
+      if(!targetVertex.explored){
+        targetVertex.explored = true;
+        reachableVertexQueue.push(targetVertex);
+        console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id} marked as explored`);
+      }else{
+        console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id} is already explored`);
       }
     });
   }
