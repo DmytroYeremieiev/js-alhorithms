@@ -3,38 +3,38 @@
 // Input 1. G = (V, E); 2. s - starting vertex
 // Output array of reachable vertices
 
-import { Edge, DirectedGraph, Vertex } from '../Graph';
+import { Edge, DirectedGraph, DirectedVertex } from '../Graph';
 
-const S: Vertex = {
+const S: DirectedVertex = {
   id: 'S',
   out_edges: ['SU', 'SV'],
 };
-const U: Vertex = {
+const U: DirectedVertex = {
   id: 'U',
   out_edges: ['UV'],
   in_edges: ['SU', 'WU'],
 };
-const V: Vertex = {
+const V: DirectedVertex = {
   id: 'V',
   in_edges: ['SV', 'UV'],
   out_edges: ['VW'],
 };
-const W: Vertex = {
+const W: DirectedVertex = {
   id: 'W',
   out_edges: ['WU'],
   in_edges: ['VW'],
 };
 
-const X: Vertex = {
+const X: DirectedVertex = {
   id: 'X',
   in_edges: ['YX'],
 };
-const Y: Vertex = {
+const Y: DirectedVertex = {
   id: 'Y',
   out_edges: ['YX'],
 };
 
-const Z: Vertex = {
+const Z: DirectedVertex = {
   id: 'Y',
 };
 
@@ -50,18 +50,18 @@ const graph: DirectedGraph = {
   edges: [_YX, _VW, _WU, _UV, _SV, _SU],
 };
 
-export function findReachableVerticesFromDirectedGraph(graph: DirectedGraph, start: Vertex): Vertex[] {
+export function findReachableVerticesFromDirectedGraph(graph: DirectedGraph, start: DirectedVertex): DirectedVertex[] {
   const verticesMap = graph.vertices.reduce((store, vertex) => {
     store[vertex.id] = vertex;
     return store;
-  }, {} as { [key: string]: Vertex });
+  }, {} as { [key: string]: DirectedVertex });
   const edgesMap = graph.edges.reduce((store, edge) => {
     store[edge.id] = edge;
     return store;
   }, {} as { [key: string]: Edge });
 
   start.explored = true;
-  const reachableVertexQueue: Vertex[] = [start];
+  const reachableVertexQueue: DirectedVertex[] = [start];
   while (reachableVertexQueue.length > 0) {
     const source = reachableVertexQueue.shift();
     console.log(`verifying ${source?.id} out_edges: `);
