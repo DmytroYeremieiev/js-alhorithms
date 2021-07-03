@@ -3,7 +3,7 @@
 // Input 1. G = (V, E); 2. s - starting vertex
 // Output array of reachable vertices
 
-import { Edge, DirectedGraph, Vertex } from '../DirectedGraph';
+import { Edge, DirectedGraph, Vertex } from '../Graph';
 
 const S: Vertex = {
   id: 'S',

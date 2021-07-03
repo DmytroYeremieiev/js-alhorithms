@@ -3,7 +3,7 @@
 // Input 1. G = (V, E); 2. s - starting vertex
 // Output array of reachable vertices
 
-import { Edge, DirectedGraph, Vertex } from '../DirectedGraph';
+import { Edge, DirectedGraph, Vertex } from '../Graph';
 
 const S: Vertex = {
   id: 'S',
@@ -50,7 +50,7 @@ const graph: DirectedGraph = {
   edges: [_YX, _VW, _WU, _UV, _SV, _SU],
 };
 
-export function findReachableVertices(graph: DirectedGraph, start: Vertex): Vertex[] {
+export function findReachableVerticesFromDirectedGraph(graph: DirectedGraph, start: Vertex): Vertex[] {
   const verticesMap = graph.vertices.reduce((store, vertex) => {
     store[vertex.id] = vertex;
     return store;
@@ -82,6 +82,6 @@ export function findReachableVertices(graph: DirectedGraph, start: Vertex): Vert
 }
 
 console.log(
-  'findReachableVertices',
-  findReachableVertices(graph, S).map(v => v.id)
+  'Figure 8.2 - directed',
+  findReachableVerticesFromDirectedGraph(graph, S).map(v => v.id)
 );
