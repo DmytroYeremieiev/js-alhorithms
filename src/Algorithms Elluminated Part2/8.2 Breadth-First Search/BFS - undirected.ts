@@ -3,7 +3,7 @@
 // Input 1. G = (V, E); 2. s - starting vertex
 // Output array of reachable vertices
 
-import { Edge, UndirectedVertex, UndirectedGraph } from '../Graph';
+import { UndirectedEdge, UndirectedVertex, UndirectedGraph } from '../Graph';
 
 const S: UndirectedVertex = {
   id: 'S',
@@ -31,14 +31,14 @@ const E: UndirectedVertex = {
   edges: ['EC', 'ED'],
 };
 
-const SA: Edge = { id: 'SA', source: 'S', target: 'A' };
-const SB: Edge = { id: 'SB', source: 'S', target: 'B' };
-const AC: Edge = { id: 'AC', source: 'A', target: 'C' };
-const BC: Edge = { id: 'BC', source: 'B', target: 'C' };
-const BD: Edge = { id: 'BD', source: 'B', target: 'D' };
-const DC: Edge = { id: 'DC', source: 'D', target: 'C' };
-const EC: Edge = { id: 'EC', source: 'E', target: 'C' };
-const ED: Edge = { id: 'ED', source: 'E', target: 'D' };
+const SA: UndirectedEdge = { id: 'SA', vertices: ['A', 'S'] };
+const SB: UndirectedEdge = { id: 'SB', vertices: ['B', 'S'] };
+const AC: UndirectedEdge = { id: 'AC', vertices: ['A', 'C'] };
+const BC: UndirectedEdge = { id: 'BC', vertices: ['C', 'B'] };
+const BD: UndirectedEdge = { id: 'BD', vertices: ['B', 'D'] };
+const DC: UndirectedEdge = { id: 'DC', vertices: ['D', 'C'] };
+const EC: UndirectedEdge = { id: 'EC', vertices: ['E', 'C'] };
+const ED: UndirectedEdge = { id: 'ED', vertices: ['E', 'D'] };
 
 const graph: UndirectedGraph = {
   vertices: [S, A, B, C, D, E],
@@ -53,7 +53,7 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
   const edgesMap = graph.edges.reduce((store, edge) => {
     store[edge.id] = edge;
     return store;
-  }, {} as { [key: string]: Edge });
+  }, {} as { [key: string]: UndirectedEdge });
 
   startVertex.explored = true;
   const reachableVertexQueue: UndirectedVertex[] = [startVertex];
@@ -64,7 +64,7 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
       const edge = edgesMap[edgeId];
       const targetVertex = verticesMap[edge.target];
       if(targetVertex.id === sourceVertex.id) {
-        
+
       }
       if(!target.explored){
         target.explored = true;

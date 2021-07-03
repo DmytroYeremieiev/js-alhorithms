@@ -3,7 +3,7 @@
 // Input 1. G = (V, E); 2. s - starting vertex
 // Output array of reachable vertices
 
-import { Edge, DirectedGraph, DirectedVertex } from '../Graph';
+import { DirectedGraph, DirectedVertex, DirectedEdge } from '../Graph';
 
 const S: DirectedVertex = {
   id: 'S',
@@ -38,12 +38,12 @@ const Z: DirectedVertex = {
   id: 'Y',
 };
 
-const _SU: Edge = { id: 'SU', source: 'S', target: 'U' };
-const _SV: Edge = { id: 'SV', source: 'S', target: 'V' };
-const _UV: Edge = { id: 'UV', source: 'U', target: 'V' };
-const _WU: Edge = { id: 'WU', source: 'W', target: 'U' };
-const _VW: Edge = { id: 'VW', source: 'V', target: 'W' };
-const _YX: Edge = { id: 'YX', source: 'Y', target: 'X' };
+const _SU: DirectedEdge = { id: 'SU', source: 'S', target: 'U' };
+const _SV: DirectedEdge = { id: 'SV', source: 'S', target: 'V' };
+const _UV: DirectedEdge = { id: 'UV', source: 'U', target: 'V' };
+const _WU: DirectedEdge = { id: 'WU', source: 'W', target: 'U' };
+const _VW: DirectedEdge = { id: 'VW', source: 'V', target: 'W' };
+const _YX: DirectedEdge = { id: 'YX', source: 'Y', target: 'X' };
 
 const graph: DirectedGraph = {
   vertices: [S, U, V, W, X, Y, Z],
@@ -58,7 +58,7 @@ export function findReachableVerticesFromDirectedGraph(graph: DirectedGraph, sta
   const edgesMap = graph.edges.reduce((store, edge) => {
     store[edge.id] = edge;
     return store;
-  }, {} as { [key: string]: Edge });
+  }, {} as { [key: string]: DirectedEdge });
 
   start.explored = true;
   const reachableVertexQueue: DirectedVertex[] = [start];

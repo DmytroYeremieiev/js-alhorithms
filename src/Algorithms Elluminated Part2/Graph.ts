@@ -1,8 +1,6 @@
 type id = string;
 
 export interface Edge {
-  source: id;
-  target: id;
   weight?: number;
   id: id;
 }
@@ -10,6 +8,14 @@ export interface Edge {
 export interface Vertex  {
   explored?: boolean;
   id: id;
+}
+
+export interface DirectedEdge extends Edge {
+  source: id;
+  target: id;
+}
+export interface UndirectedEdge extends Edge  {
+  vertices: id[]
 }
 
 export interface DirectedVertex extends Vertex {
@@ -25,9 +31,9 @@ export interface UndirectedVertex extends Vertex {
 
 export interface DirectedGraph {
   vertices: DirectedVertex[];
-  edges: Edge[];
+  edges: DirectedEdge[];
 }
 export interface UndirectedGraph {
   vertices: UndirectedVertex[];
-  edges: Edge[];
+  edges: UndirectedEdge[];
 }
