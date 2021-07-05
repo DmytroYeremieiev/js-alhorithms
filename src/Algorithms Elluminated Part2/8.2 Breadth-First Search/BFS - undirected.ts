@@ -8,27 +8,33 @@ import { UndirectedEdge, UndirectedVertex, UndirectedGraph } from '../Graph';
 const S: UndirectedVertex = {
   id: 'S',
   edges: ['1', '3'],
+  layer: Infinity
 };
 const A: UndirectedVertex = {
   id: 'A',
   edges: ['1', '2'],
+  layer: Infinity
 };
 const B: UndirectedVertex = {
   id: 'B',
   edges: ['3', '4', '5'],
+  layer: Infinity
 };
 const C: UndirectedVertex = {
   id: 'C',
   edges: ['2', '8', '4', '6'],
+  layer: Infinity
 };
 
 const D: UndirectedVertex = {
   id: 'D',
   edges: ['5', '6', '7'],
+  layer: Infinity
 };
 const E: UndirectedVertex = {
   id: 'E',
   edges: ['8', '7'],
+  layer: Infinity
 };
 
 const e1: UndirectedEdge = { id: '1', vertices: ['A', 'S'] };
@@ -47,6 +53,7 @@ const graph: UndirectedGraph = {
 
 export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph, startVertex: UndirectedVertex): UndirectedVertex[] {
   const verticesMap = graph.vertices.reduce((store, vertex) => {
+    vertex.layer = Infinity;
     store[vertex.id] = vertex;
     return store;
   }, {} as { [key: string]: UndirectedVertex });
@@ -56,10 +63,11 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
   }, {} as { [key: string]: UndirectedEdge });
 
   startVertex.explored = true;
+  startVertex.layer = 0; 
   const reachableVertexQueue: UndirectedVertex[] = [startVertex];
   while (reachableVertexQueue.length > 0) {
     const sourceVertex = reachableVertexQueue.shift();
-    console.log(`verifying ${sourceVertex?.id} edges: `);
+    console.log(`verifying ${sourceVertex?.id}-${sourceVertex?.layer} edges: `);
     sourceVertex?.edges?.forEach(edgeId => {
       const edge = edgesMap[edgeId];
       let targetVertex = null
@@ -70,10 +78,11 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
       }
       if(!targetVertex.explored){
         targetVertex.explored = true;
+        targetVertex.layer = sourceVertex.layer + 1;
         reachableVertexQueue.push(targetVertex);
-        console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id} marked as explored`);
+        console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id}-${targetVertex.layer} marked as explored`);
       }else{
-        console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id} is already explored`);
+        console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id}-${targetVertex.layer} is already explored`);
       }
     });
   }
@@ -83,5 +92,5 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
 
 console.log(
   'undirected',
-  findReachableVerticesFromUndirectedGraph(graph, S).map(v => v.id)
+  findReachableVerticesFromUndirectedGraph(graph, S).map(v => `${v.id}-${v.layer}`)
 );
