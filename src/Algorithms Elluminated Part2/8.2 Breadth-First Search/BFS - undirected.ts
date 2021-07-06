@@ -37,14 +37,14 @@ const E: UndirectedVertex = {
   layer: Infinity
 };
 
-const e1: UndirectedEdge = { id: '1', vertices: ['A', 'S'] };
-const e2: UndirectedEdge = { id: '2', vertices: ['A', 'C'] };
-const e3: UndirectedEdge = { id: '3', vertices: ['S', 'B'] };
-const e4: UndirectedEdge = { id: '4', vertices: ['B', 'C'] };
-const e5: UndirectedEdge = { id: '5', vertices: ['D', 'B'] };
-const e6: UndirectedEdge = { id: '6', vertices: ['C', 'D'] };
-const e7: UndirectedEdge = { id: '7', vertices: ['E', 'D'] };
-const e8: UndirectedEdge = { id: '8', vertices: ['E', 'C'] };
+const e1: UndirectedEdge = { id: '1', vertices: ['A', 'S'], weight: 1 };
+const e2: UndirectedEdge = { id: '2', vertices: ['A', 'C'], weight: 2 };
+const e3: UndirectedEdge = { id: '3', vertices: ['S', 'B'], weight: 3 };
+const e4: UndirectedEdge = { id: '4', vertices: ['B', 'C'], weight: 4 };
+const e5: UndirectedEdge = { id: '5', vertices: ['D', 'B'], weight: 5 };
+const e6: UndirectedEdge = { id: '6', vertices: ['C', 'D'], weight: 6 };
+const e7: UndirectedEdge = { id: '7', vertices: ['E', 'D'], weight: 7 };
+const e8: UndirectedEdge = { id: '8', vertices: ['E', 'C'], weight: 8 };
 
 const graph: UndirectedGraph = {
   vertices: [S, A, B, C, D, E],

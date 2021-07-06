@@ -6,9 +6,10 @@ export interface Edge {
 }
 
 export interface Vertex  {
-  explored?: boolean;
   id: id;
   layer: number;
+  explored?: boolean;
+  connectedComponentsIndex?: number;
 }
 
 export interface DirectedEdge extends Edge {
