@@ -95,7 +95,7 @@ export function computeConnectedComponentsForUndirectedGraph(graph: UndirectedGr
       const sourceVertex = reachableVertexQueue.shift();
       if(!sourceVertex) break;
       sourceVertex.connectedComponentsIndex = connectedComponentsIndex;
-      console.log(`verifying ${sourceVertex?.id}-l:${sourceVertex?.layer}-cc:${connectedComponentsIndex} edges: `);
+      console.log(`verifying ${sourceVertex?.id}-cc:${connectedComponentsIndex}-l:${sourceVertex?.layer} edges: `);
       sourceVertex.edges?.forEach(edgeId => {
         const edge = edgesMap[edgeId];
         let targetVertex = null
@@ -108,9 +108,9 @@ export function computeConnectedComponentsForUndirectedGraph(graph: UndirectedGr
           targetVertex.explored = true;
           targetVertex.layer = sourceVertex.layer + 1;
           reachableVertexQueue.push(targetVertex);
-          console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id}-${targetVertex.layer} marked as explored`);
+          console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id} marked as explored`);
         }else{
-          console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id}-${targetVertex.layer} is already explored`);
+          console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id} is already explored`);
         }
       });
     }
@@ -121,10 +121,10 @@ export function computeConnectedComponentsForUndirectedGraph(graph: UndirectedGr
 }
 
 const res = computeConnectedComponentsForUndirectedGraph(graph)
-// .sort((a,b)=>((a.connectedComponentsIndex ?? 0) - (b.connectedComponentsIndex ?? 0)))
+.sort((a,b)=>((a.connectedComponentsIndex ?? 0) - (b.connectedComponentsIndex ?? 0)))
 .map(v => `${v.id}-l:${v.layer}-cc:${v.connectedComponentsIndex}`)
 
 console.log(
   'computeConnectedComponentsForUndirectedGraph',
-  res
+  JSON.stringify(res)
 );
