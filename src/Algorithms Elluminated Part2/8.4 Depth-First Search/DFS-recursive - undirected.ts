@@ -62,19 +62,19 @@ export function _findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph
     verticesMap: {  [key: string]: UndirectedVertex; }, 
     edgesMap: {  [key: string]: UndirectedEdge; }
   ) {
-
+  if(startVertex.explored){
+    console.log(`...'${startVertex.id}' is already explored, returning..`);
+    return;
+  }
   startVertex.explored = true;
-  console.log(`verifying startVertex '${startVertex?.id}' edges: `);
+  console.log(`Verifying startVertex '${startVertex?.id}' edges: `);
   for (let i = 0; i < startVertex.edges.length; i++) {
     const edgeId = startVertex.edges[i];
     const edge = edgesMap[edgeId];
     const targetVertex = verticesMap[edge.vertices[0] === startVertex.id ? edge.vertices[1] : edge.vertices[0]];
-    if(targetVertex.explored){
-      console.log(`startVertex '${startVertex.id}' edge '${edge.id}', targetVertex '${targetVertex?.id}' is already explored!`);
-      continue;
-    }
-    console.log(`startVertex '${startVertex.id}' edge '${edge.id}', triggering '${targetVertex.id}' exploration;`);
-    findReachableVerticesFromUndirectedGraph(graph, targetVertex)
+
+    console.log(`startVertex '${startVertex.id}' edge '${edge.id}', triggering '${targetVertex.id}' exploration:`);
+    _findReachableVerticesFromUndirectedGraph(graph, targetVertex, verticesMap, edgesMap)
   }
 }
 
