@@ -26,16 +26,29 @@ export interface DirectedVertex extends Vertex {
 }
 
 export interface UndirectedVertex extends Vertex {
-  edges?: id[];
-  explored?: boolean;
-  id: id;
+  edges: id[];
 }
 
-export interface DirectedGraph {
-  vertices: DirectedVertex[];
-  edges: DirectedEdge[];
+
+export interface Graph<V,E> {
+  vertices: V[];
+  edges: E[];
 }
-export interface UndirectedGraph {
-  vertices: UndirectedVertex[];
-  edges: UndirectedEdge[];
+export interface DirectedGraph extends Graph<DirectedVertex,DirectedEdge> {};
+export interface UndirectedGraph extends Graph<UndirectedVertex,UndirectedEdge> {};
+
+export const getVerticesMap = <V extends Vertex, E extends Edge>(graph: Graph<V,E>)=>{
+  const verticesMap = graph.vertices.reduce((store, vertex) => {
+    vertex.layer = Infinity;
+    store[vertex.id] = vertex;
+    return store;
+  }, {} as { [key: string]: V });
+  return verticesMap
+}
+export const getEdgeMap = <V extends Vertex, E extends Edge>(graph: Graph<V,E>)=>{
+  const edgesMap = graph.edges.reduce((store, edge) => {
+    store[edge.id] = edge;
+    return store;
+  }, {} as { [key: string]: E });
+  return edgesMap
 }

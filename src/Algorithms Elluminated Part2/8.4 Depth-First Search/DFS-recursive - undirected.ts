@@ -22,13 +22,13 @@ const B: UndirectedVertex = {
 };
 const C: UndirectedVertex = {
   id: 'C',
-  edges: ['2', '4', '6', '8'],
+  edges: ['2', '6', '4', '8'],
   layer: Infinity
 };
 
 const D: UndirectedVertex = {
   id: 'D',
-  edges: ['5', '6', '7'],
+  edges: ['7', '6', '5'],
   layer: Infinity
 };
 const E: UndirectedVertex = {
@@ -55,35 +55,30 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
   const verticesMap = getVerticesMap(graph);
   const edgesMap = getEdgeMap(graph);
 
-  const reachableVertexQueue: UndirectedVertex[] = [startVertex];
-  while (reachableVertexQueue.length > 0) {
-    const sourceVertex = reachableVertexQueue.pop();
-    if(!sourceVertex) break;
-    if(sourceVertex?.explored){
-      console.log(`sourceVertex ${sourceVertex?.id} is already explored `);
-      continue;
-    }else{
-      sourceVertex.explored = true;
-    }
-    console.log(`verifying sourceVertex ${sourceVertex?.id} edges: `);
-    sourceVertex?.edges?.forEach(edgeId => {
-      const edge = edgesMap[edgeId];
-      let targetVertex = null
-      if(verticesMap[edge.vertices[0]].id === sourceVertex.id) {
-        targetVertex = verticesMap[edge.vertices[1]]
-      }else{
-        targetVertex = verticesMap[edge.vertices[0]]
-      }
-      reachableVertexQueue.push(targetVertex);
-      console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id} added to stack`);
+  _findReachableVerticesFromUndirectedGraph(graph, startVertex, verticesMap, edgesMap);
+  return graph.vertices.filter(v => v.explored);
+}
+export function _findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph, startVertex: UndirectedVertex, 
+    verticesMap: {  [key: string]: UndirectedVertex; }, 
+    edgesMap: {  [key: string]: UndirectedEdge; }
+  ) {
 
-    });
+  startVertex.explored = true;
+  console.log(`verifying startVertex '${startVertex?.id}' edges: `);
+  for (let i = 0; i < startVertex.edges.length; i++) {
+    const edgeId = startVertex.edges[i];
+    const edge = edgesMap[edgeId];
+    const targetVertex = verticesMap[edge.vertices[0] === startVertex.id ? edge.vertices[1] : edge.vertices[0]];
+    if(targetVertex.explored){
+      console.log(`startVertex '${startVertex.id}' edge '${edge.id}', targetVertex '${targetVertex?.id}' is already explored!`);
+      continue;
+    }
+    console.log(`startVertex '${startVertex.id}' edge '${edge.id}', triggering '${targetVertex.id}' exploration;`);
+    findReachableVerticesFromUndirectedGraph(graph, targetVertex)
   }
-  const reachableVertices = graph.vertices.filter(v => v.explored);
-  return reachableVertices;
 }
 
 console.log(
-  'DFS-iterative undirected',
+  'DFS-recursive undirected',
   findReachableVerticesFromUndirectedGraph(graph, S).map(v => `${v.id}`)
 );
