@@ -68,12 +68,7 @@ export function findReachableVerticesFromUndirectedGraph(graph: UndirectedGraph,
     console.log(`verifying sourceVertex ${sourceVertex?.id} edges: `);
     sourceVertex?.edges?.forEach(edgeId => {
       const edge = edgesMap[edgeId];
-      let targetVertex = null
-      if(verticesMap[edge.vertices[0]].id === sourceVertex.id) {
-        targetVertex = verticesMap[edge.vertices[1]]
-      }else{
-        targetVertex = verticesMap[edge.vertices[0]]
-      }
+      let targetVertex = verticesMap[edge.vertices[0] === sourceVertex.id ? edge.vertices[1] : edge.vertices[0]]
       reachableVertexQueue.push(targetVertex);
       console.log(`...edge ${edge.id}, targetVertex ${targetVertex.id} added to stack`);
 
