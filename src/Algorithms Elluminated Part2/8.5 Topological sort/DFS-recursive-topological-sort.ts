@@ -9,27 +9,26 @@ const S: DirectedVertex = {
   id: 'S',
   out_edges: ['1', '3'],
   in_edges: [],
-  layer: Infinity
+  layer: Infinity,
 };
 const V: DirectedVertex = {
   id: 'V',
   out_edges: ['2'],
   in_edges: ['1'],
-  layer: Infinity
+  layer: Infinity,
 };
 const W: DirectedVertex = {
   id: 'W',
   out_edges: ['4'],
   in_edges: ['3'],
-  layer: Infinity
+  layer: Infinity,
 };
 const T: DirectedVertex = {
   id: 'T',
-  in_edges: ['2','4'],
+  in_edges: ['2', '4'],
   out_edges: [],
-  layer: Infinity
+  layer: Infinity,
 };
-
 
 const e1: DirectedEdge = { id: '1', source: 'S', target: 'V', weight: 1 };
 const e2: DirectedEdge = { id: '2', source: 'V', target: 'T', weight: 2 };
@@ -38,51 +37,51 @@ const e4: DirectedEdge = { id: '4', source: 'W', target: 'T', weight: 4 };
 
 const graph: DirectedGraph = {
   vertices: [S, V, W, T],
-  edges: [e1,e2,e3,e4],
+  edges: [e1, e2, e3, e4],
 };
 
-export function findReachableVerticesFromUndirectedGraph(graph: DirectedGraph, startVertex: DirectedVertex): DirectedVertex[] {
-  const verticesMap = getVerticesMap(graph, (vertex)=>{
-    vertex.explored= false;
-    return vertex
+export function findReachableVerticesFromUndirectedGraph(
+  graph: DirectedGraph,
+  startVertex: DirectedVertex
+): DirectedVertex[] {
+  const verticesMap = getVerticesMap(graph, vertex => {
+    vertex.explored = false;
+    return vertex;
   });
   const edgesMap = getEdgeMap(graph);
-  let currentOrderRef = {current: graph.vertices.length};
+  const currentOrderRef = { current: graph.vertices.length };
   for (let i = 0; i < graph.vertices.length; i++) {
     const v = graph.vertices[i];
-    if(!v.explored){
+    if (!v.explored) {
       _findReachableVerticesFromUndirectedGraph(graph, startVertex, currentOrderRef, verticesMap, edgesMap);
     }
-  } 
+  }
   return graph.vertices;
 }
-export function _findReachableVerticesFromUndirectedGraph(graph: DirectedGraph, startVertex: DirectedVertex, currentOrderRef: {current: number},
-    verticesMap: {  [key: string]: DirectedVertex; }, 
-    edgesMap: {  [key: string]: DirectedEdge; }
-  ) {
-
+export function _findReachableVerticesFromUndirectedGraph(
+  graph: DirectedGraph,
+  startVertex: DirectedVertex,
+  currentOrderRef: { current: number },
+  verticesMap: { [key: string]: DirectedVertex },
+  edgesMap: { [key: string]: DirectedEdge }
+) {
   startVertex.explored = true;
-  console.log(`Verifying startVertex '${startVertex.id}', o:${startVertex.order} edges: `);
+  console.log(`Verifying startVertex '${startVertex.id}' edges: `);
 
   for (let i = 0; i < startVertex.out_edges.length; i++) {
     const outEdge = edgesMap[startVertex.out_edges[i]];
     const targetVertex = verticesMap[outEdge.target];
 
-    if(targetVertex.explored) {
+    if (targetVertex.explored) {
       console.log(`startVertex '${startVertex.id}', edge '${outEdge.id}', '${targetVertex.id}' is already explored!`);
       continue;
     }
     console.log(`startVertex '${startVertex.id}', edge '${outEdge.id}', triggering '${targetVertex.id}' exploration:`);
-    _findReachableVerticesFromUndirectedGraph(graph, targetVertex, currentOrderRef, verticesMap, edgesMap)
+    _findReachableVerticesFromUndirectedGraph(graph, targetVertex, currentOrderRef, verticesMap, edgesMap);
   }
   startVertex.order = currentOrderRef.current;
   currentOrderRef.current = currentOrderRef.current - 1;
   console.log(`assigning startVertex '${startVertex.id}' an order: ${startVertex.order}`);
 }
-
-console.log(
-  'DFS-recursive undirected',
-  findReachableVerticesFromUndirectedGraph(graph, S).map(v => `${v.id}-${v.order}`)
-);
-
-console.log('');
+const res = findReachableVerticesFromUndirectedGraph(graph, S).map(v => `${v.id}-${v.order}`);
+console.log('\nDFS-recursive undirected: ', JSON.stringify(res));
