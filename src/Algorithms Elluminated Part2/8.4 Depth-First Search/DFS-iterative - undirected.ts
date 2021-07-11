@@ -7,7 +7,7 @@ import { UndirectedEdge, UndirectedVertex, UndirectedGraph, getEdgeMap, getVerti
 
 const S: UndirectedVertex = {
   id: 'S',
-  edges: ['1', '3'],
+  edges: ['3', '1'],
   layer: Infinity
 };
 const A: UndirectedVertex = {
@@ -22,7 +22,7 @@ const B: UndirectedVertex = {
 };
 const C: UndirectedVertex = {
   id: 'C',
-  edges: ['2', '4', '6', '8'],
+  edges: ['2', '4', '8', '6'],
   layer: Infinity
 };
 
