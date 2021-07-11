@@ -3,7 +3,7 @@
 // Input 1. G = (V, E); 2. s - starting vertex
 // Output array of reachable vertices
 
-import { UndirectedEdge, UndirectedVertex, UndirectedGraph } from '../Graph';
+import { UndirectedEdge, UndirectedVertex, UndirectedGraph, getVerticesMap, getEdgeMap } from '../Graph';
 
 const v1: UndirectedVertex = {
   id: 'v1',
@@ -71,15 +71,12 @@ const graph: UndirectedGraph = {
 };
 
 export function computeConnectedComponentsForUndirectedGraph(graph: UndirectedGraph): UndirectedVertex[] {
-  const verticesMap = graph.vertices.reduce((store, vertex) => {
+  const verticesMap = getVerticesMap(graph, (vertex)=>{
     vertex.layer = Infinity;
-    store[vertex.id] = vertex;
-    return store;
-  }, {} as { [key: string]: UndirectedVertex });
-  const edgesMap = graph.edges.reduce((store, edge) => {
-    store[edge.id] = edge;
-    return store;
-  }, {} as { [key: string]: UndirectedEdge });
+    vertex.explored = false;
+    return vertex;
+  })
+  const edgesMap = getEdgeMap(graph)
 
   let connectedComponentsIndex = 0;
 
@@ -98,12 +95,7 @@ export function computeConnectedComponentsForUndirectedGraph(graph: UndirectedGr
       console.log(`verifying ${sourceVertex?.id}-cc:${connectedComponentsIndex}-l:${sourceVertex?.layer} edges: `);
       sourceVertex.edges?.forEach(edgeId => {
         const edge = edgesMap[edgeId];
-        let targetVertex = null
-        if(verticesMap[edge.vertices[0]].id === sourceVertex.id) {
-          targetVertex = verticesMap[edge.vertices[1]]
-        }else{
-          targetVertex = verticesMap[edge.vertices[0]]
-        }
+        let targetVertex = verticesMap[edge.vertices[0]].id === sourceVertex.id ? verticesMap[edge.vertices[1]] : verticesMap[edge.vertices[0]];
         if(!targetVertex.explored){
           targetVertex.explored = true;
           targetVertex.layer = sourceVertex.layer + 1;
