@@ -5,7 +5,7 @@ export interface Edge {
   id: id;
 }
 
-export interface Vertex  {
+export interface Vertex {
   id: id;
   layer: number;
   explored?: boolean;
@@ -16,8 +16,8 @@ export interface DirectedEdge extends Edge {
   source: id;
   target: id;
 }
-export interface UndirectedEdge extends Edge  {
-  vertices: id[]
+export interface UndirectedEdge extends Edge {
+  vertices: id[];
 }
 
 export interface DirectedVertex extends Vertex {
@@ -30,25 +30,24 @@ export interface UndirectedVertex extends Vertex {
   edges: id[];
 }
 
-
-export interface Graph<V,E> {
+export interface Graph<V, E> {
   vertices: V[];
   edges: E[];
 }
-export interface DirectedGraph extends Graph<DirectedVertex,DirectedEdge> {};
-export interface UndirectedGraph extends Graph<UndirectedVertex,UndirectedEdge> {};
+export type DirectedGraph = Graph<DirectedVertex, DirectedEdge>;
+export type UndirectedGraph = Graph<UndirectedVertex, UndirectedEdge>;
 
-export const getVerticesMap = <V extends Vertex, E extends Edge>(graph: Graph<V,E>, init?: (vertex: V)=> V)=>{
+export const getVerticesMap = <V extends Vertex, E extends Edge>(graph: Graph<V, E>, init?: (vertex: V) => V) => {
   const verticesMap = graph.vertices.reduce((store, vertex) => {
     store[vertex.id] = init ? init(vertex) : vertex;
     return store;
   }, {} as { [key: string]: V });
-  return verticesMap
-}
-export const getEdgeMap = <V extends Vertex, E extends Edge>(graph: Graph<V,E>, init?: (edge: E)=> E)=>{
+  return verticesMap;
+};
+export const getEdgeMap = <V extends Vertex, E extends Edge>(graph: Graph<V, E>, init?: (edge: E) => E) => {
   const edgesMap = graph.edges.reduce((store, edge) => {
     store[edge.id] = init ? init(edge) : edge;
     return store;
   }, {} as { [key: string]: E });
-  return edgesMap
-}
+  return edgesMap;
+};
