@@ -36,27 +36,28 @@ const e3: DirectedEdge = { id: '3', source: 'S', target: 'W', weight: 3 };
 const e4: DirectedEdge = { id: '4', source: 'W', target: 'T', weight: 4 };
 
 const graph: DirectedGraph = {
-  vertices: [S, V, W, T],
+  vertices: [V, T, S, W], // randomly sorted vertices
   edges: [e1, e2, e3, e4],
 };
 
-export function findReachableVerticesFromUndirectedGraph(
-  graph: DirectedGraph,
-  startVertex: DirectedVertex
-): DirectedVertex[] {
+export function findReachableVerticesFromUndirectedGraph(graph: DirectedGraph): DirectedVertex[] {
   const verticesMap = getVerticesMap(graph, vertex => {
     vertex.explored = false;
     return vertex;
   });
   const edgesMap = getEdgeMap(graph);
   const currentOrderRef = { current: graph.vertices.length };
+  console.log('Iterating over all vertices:');
   for (let i = 0; i < graph.vertices.length; i++) {
-    const v = graph.vertices[i];
-    if (!v.explored) {
+    const startVertex = graph.vertices[i];
+    if (!startVertex.explored) {
+      console.log(`Running DFS on '${startVertex.id}' vertex:`);
       _findReachableVerticesFromUndirectedGraph(graph, startVertex, currentOrderRef, verticesMap, edgesMap);
+    } else {
+      console.log(`'${startVertex.id}' is already explored`);
     }
   }
-  return graph.vertices;
+  return graph.vertices.sort((a, b) => a.order! - b.order!);
 }
 export function _findReachableVerticesFromUndirectedGraph(
   graph: DirectedGraph,
@@ -66,22 +67,27 @@ export function _findReachableVerticesFromUndirectedGraph(
   edgesMap: { [key: string]: DirectedEdge }
 ) {
   startVertex.explored = true;
-  console.log(`Verifying startVertex '${startVertex.id}' edges: `);
+  console.log(
+    `...DFS-start '${startVertex.id}': verifying '${startVertex.id}' edges[${startVertex.out_edges.length}]: `
+  );
 
   for (let i = 0; i < startVertex.out_edges.length; i++) {
     const outEdge = edgesMap[startVertex.out_edges[i]];
     const targetVertex = verticesMap[outEdge.target];
 
     if (targetVertex.explored) {
-      console.log(`startVertex '${startVertex.id}', edge '${outEdge.id}', '${targetVertex.id}' is already explored!`);
+      console.log(`......'${startVertex.id}': edge '${outEdge.id}', target: '${targetVertex.id}' is already explored!`);
       continue;
     }
-    console.log(`startVertex '${startVertex.id}', edge '${outEdge.id}', triggering '${targetVertex.id}' exploration:`);
+    console.log(
+      `......'${startVertex.id}': edge '${outEdge.id}', triggering '${targetVertex.id}' exploration and recursing DFS on it:`
+    );
     _findReachableVerticesFromUndirectedGraph(graph, targetVertex, currentOrderRef, verticesMap, edgesMap);
   }
   startVertex.order = currentOrderRef.current;
   currentOrderRef.current = currentOrderRef.current - 1;
-  console.log(`assigning startVertex '${startVertex.id}' an order: ${startVertex.order}`);
+  console.log(`...DFS-end '${startVertex.id}': assigning '${startVertex.id}' an order: ${startVertex.order}`);
+  console.log(`...DFS-end '${startVertex.id}': unwind stack up`);
 }
-const res = findReachableVerticesFromUndirectedGraph(graph, S).map(v => `${v.id}-${v.order}`);
+const res = findReachableVerticesFromUndirectedGraph(graph).map(v => `${v.id}-${v.order}`);
 console.log('\nDFS-recursive undirected: ', JSON.stringify(res));
