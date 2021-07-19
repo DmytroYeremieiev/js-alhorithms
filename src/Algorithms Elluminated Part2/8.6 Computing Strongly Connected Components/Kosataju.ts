@@ -18,7 +18,7 @@ const v3: DirectedVertex = {
 const v5: DirectedVertex = {
   id: 'v5',
   out_edges: ['e2', 'e13', 'e14'],
-  in_edges: [],
+  in_edges: ['e3'],
 };
 const v11: DirectedVertex = {
   id: 'v11',
@@ -110,20 +110,18 @@ export function _findReachableVerticesFromUndirectedGraph_Reversed(
   edgesMap: { [key: string]: DirectedEdge }
 ) {
   startVertex.explored = true;
-  console.log(
-    `...DFS-start '${startVertex.id}': verifying '${startVertex.id}' edges[${startVertex.in_edges.length}]: `
-  );
+  console.log(`...DFS-start '${startVertex.id}': verifying outer edges[${startVertex.in_edges.length}]: `);
 
   for (let i = 0; i < startVertex.in_edges.length; i++) {
-    const outEdge = edgesMap[startVertex.in_edges[i]];
-    const targetVertex = verticesMap[outEdge.target];
+    const inEdge = edgesMap[startVertex.in_edges[i]];
+    const targetVertex = verticesMap[inEdge.source];
 
     if (targetVertex.explored) {
-      console.log(`......'${startVertex.id}': edge '${outEdge.id}', target: '${targetVertex.id}' is already explored!`);
+      console.log(`......'${startVertex.id}': edge '${inEdge.id}', target: '${targetVertex.id}' is already explored!`);
       continue;
     }
     console.log(
-      `......'${startVertex.id}': edge '${outEdge.id}', triggering '${targetVertex.id}' exploration and recursing DFS on it:`
+      `......'${startVertex.id}': edge '${inEdge.id}', triggering '${targetVertex.id}' exploration and recursing DFS on it:`
     );
     _findReachableVerticesFromUndirectedGraph_Reversed(graph, targetVertex, currentOrderRef, verticesMap, edgesMap);
   }
