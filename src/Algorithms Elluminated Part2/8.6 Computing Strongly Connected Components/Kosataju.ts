@@ -111,11 +111,11 @@ export function _findReachableVerticesFromUndirectedGraph_Reversed(
 ) {
   startVertex.explored = true;
   console.log(
-    `...DFS-start '${startVertex.id}': verifying '${startVertex.id}' edges[${startVertex.out_edges.length}]: `
+    `...DFS-start '${startVertex.id}': verifying '${startVertex.id}' edges[${startVertex.in_edges.length}]: `
   );
 
-  for (let i = 0; i < startVertex.out_edges.length; i++) {
-    const outEdge = edgesMap[startVertex.out_edges[i]];
+  for (let i = 0; i < startVertex.in_edges.length; i++) {
+    const outEdge = edgesMap[startVertex.in_edges[i]];
     const targetVertex = verticesMap[outEdge.target];
 
     if (targetVertex.explored) {
@@ -142,7 +142,10 @@ export function computeConnectedComponentsForDirectedAcyclicGraph(graph: Directe
   const edgesMap = getEdgeMap(graph);
   findReachableVerticesFromUndirectedGraph_Reversed(graph, verticesMap, edgesMap);
   const sortedVertices = graph.vertices.sort((a, b) => a.order! - b.order!);
-  console.log('\nSorting vertices[] by topological order : ', JSON.stringify(sortedVertices));
+  console.log(
+    '\nSorting vertices[] by topological order : ',
+    JSON.stringify(sortedVertices.map(v => `${v.id}-o:${v.order}`))
+  );
   return sortedVertices;
 }
 
