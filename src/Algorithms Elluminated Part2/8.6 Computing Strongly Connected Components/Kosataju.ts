@@ -84,27 +84,25 @@ const graph: DirectedGraph = {
   vertices: [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11], // randomly sorted vertices
   edges: [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, e16, e17, e18],
 };
-
-export function findReachableVerticesFromUndirectedGraph(graph: DirectedGraph): DirectedVertex[] {
-  const verticesMap = getVerticesMap(graph, vertex => {
-    vertex.explored = false;
-    return vertex;
-  });
-  const edgesMap = getEdgeMap(graph);
+export function findReachableVerticesFromUndirectedGraph_Reversed(
+  graph: DirectedGraph,
+  verticesMap: { [key: string]: DirectedVertex },
+  edgesMap: { [key: string]: DirectedEdge }
+): DirectedVertex[] {
   const currentOrderRef = { current: graph.vertices.length };
   console.log('Iterating over all vertices:');
   for (let i = 0; i < graph.vertices.length; i++) {
     const startVertex = graph.vertices[i];
     if (!startVertex.explored) {
       console.log(`Running DFS on '${startVertex.id}' vertex:`);
-      _findReachableVerticesFromUndirectedGraph(graph, startVertex, currentOrderRef, verticesMap, edgesMap);
+      _findReachableVerticesFromUndirectedGraph_Reversed(graph, startVertex, currentOrderRef, verticesMap, edgesMap);
     } else {
       console.log(`'${startVertex.id}' is already explored`);
     }
   }
   return graph.vertices.sort((a, b) => a.order! - b.order!);
 }
-export function _findReachableVerticesFromUndirectedGraph(
+export function _findReachableVerticesFromUndirectedGraph_Reversed(
   graph: DirectedGraph,
   startVertex: DirectedVertex,
   currentOrderRef: { current: number },
@@ -127,12 +125,26 @@ export function _findReachableVerticesFromUndirectedGraph(
     console.log(
       `......'${startVertex.id}': edge '${outEdge.id}', triggering '${targetVertex.id}' exploration and recursing DFS on it:`
     );
-    _findReachableVerticesFromUndirectedGraph(graph, targetVertex, currentOrderRef, verticesMap, edgesMap);
+    _findReachableVerticesFromUndirectedGraph_Reversed(graph, targetVertex, currentOrderRef, verticesMap, edgesMap);
   }
   startVertex.order = currentOrderRef.current;
   currentOrderRef.current = currentOrderRef.current - 1;
   console.log(`...DFS-end '${startVertex.id}': assigning '${startVertex.id}' an order: ${startVertex.order}`);
   console.log(`...DFS-end '${startVertex.id}': unwind stack up`);
 }
-const res = findReachableVerticesFromUndirectedGraph(graph).map(v => `${v.id}-${v.order}`);
-console.log('\nDFS-recursive undirected: ', JSON.stringify(res));
+
+export function computeConnectedComponentsForDirectedAcyclicGraph(graph: DirectedGraph): DirectedVertex[] {
+  const verticesMap = getVerticesMap(graph, vertex => {
+    vertex.explored = false;
+    return vertex;
+  });
+  console.log('Assigning topological order on a first pass of Kosaraju algorithm on a reversed Directed Acyclic Graph');
+  const edgesMap = getEdgeMap(graph);
+  findReachableVerticesFromUndirectedGraph_Reversed(graph, verticesMap, edgesMap);
+  const sortedVertices = graph.vertices.sort((a, b) => a.order! - b.order!);
+  console.log('\nSorting vertices[] by topological order : ', JSON.stringify(sortedVertices));
+  return sortedVertices;
+}
+
+const res = computeConnectedComponentsForDirectedAcyclicGraph(graph).map(v => `${v.id}-${v.order}`);
+// console.log('\ncc for Directed Acyclic Graph : ', JSON.stringify(res));
