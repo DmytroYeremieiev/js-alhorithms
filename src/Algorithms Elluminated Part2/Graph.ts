@@ -9,6 +9,7 @@ export interface Vertex {
   id: id;
   explored?: boolean;
   connectedComponentsIndex?: number;
+  layer?: number;
 }
 
 export interface DirectedEdge extends Edge {
@@ -27,7 +28,6 @@ export interface DirectedVertex extends Vertex {
 
 export interface UndirectedVertex extends Vertex {
   edges: id[];
-  layer: number;
 }
 
 export interface Graph<V, E> {
