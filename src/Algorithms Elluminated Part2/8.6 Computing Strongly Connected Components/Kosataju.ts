@@ -81,7 +81,7 @@ const e17: DirectedEdge = { id: 'e17', source: 'v9', target: 'v4' };
 const e18: DirectedEdge = { id: 'e18', source: 'v2', target: 'v4' };
 
 const graph: DirectedGraph = {
-  vertices: [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11], // randomly sorted vertices
+  vertices: [v10, v11, v9, v8, v7, v6, v5, v4, v3, v2, v1], // randomly sorted vertices
   edges: [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, e16, e17, e18],
 };
 export function findReachableVerticesFromUndirectedGraph_Reversed(
@@ -130,22 +130,63 @@ export function _findReachableVerticesFromUndirectedGraph_Reversed(
   console.log(`...DFS-end '${startVertex.id}': assigning '${startVertex.id}' an order: ${startVertex.order}`);
   console.log(`...DFS-end '${startVertex.id}': unwind stack up`);
 }
+export function findConnectedComponentsFromUndirectedGraph(
+  graph: DirectedGraph,
+  startVertex: DirectedVertex,
+  ccIndex: number,
+  verticesMap: { [key: string]: DirectedVertex },
+  edgesMap: { [key: string]: DirectedEdge }
+) {
+  startVertex.explored = true;
+  startVertex.connectedComponentsIndex = ccIndex;
+  console.log(
+    `...DFS-start '${startVertex.id}', ccId: ${ccIndex}, verifying outer edges[${startVertex.in_edges.length}]: `
+  );
+
+  for (let i = 0; i < startVertex.out_edges.length; i++) {
+    const outEdge = edgesMap[startVertex.out_edges[i]];
+    const targetVertex = verticesMap[outEdge.target];
+
+    if (targetVertex.explored) {
+      console.log(`......'${startVertex.id}': edge '${outEdge.id}', target: '${targetVertex.id}' is already explored!`);
+      continue;
+    }
+
+    console.log(
+      `......'${startVertex.id}': edge '${outEdge.id}', triggering '${targetVertex.id}' exploration(sharing ccId: ${ccIndex}) and recursing DFS on it:`
+    );
+    findConnectedComponentsFromUndirectedGraph(graph, targetVertex, ccIndex, verticesMap, edgesMap);
+  }
+  console.log(`...DFS-end '${startVertex.id}': unwind stack up`);
+}
 
 export function computeConnectedComponentsForDirectedAcyclicGraph(graph: DirectedGraph): DirectedVertex[] {
   const verticesMap = getVerticesMap(graph, vertex => {
     vertex.explored = false;
     return vertex;
   });
-  console.log('Assigning topological order on a first pass of Kosaraju algorithm on a reversed Directed Acyclic Graph');
+  console.log(
+    '------- 1. Assigning topological order on a first pass of Kosaraju algorithm on a reversed Directed Acyclic Graph\n'
+  );
   const edgesMap = getEdgeMap(graph);
   findReachableVerticesFromUndirectedGraph_Reversed(graph, verticesMap, edgesMap);
   const sortedVertices = graph.vertices.sort((a, b) => a.order! - b.order!);
   console.log(
-    '\nSorting vertices[] by topological order : ',
+    '\n------- 2. Sort vertices[] by topological order:\n',
     JSON.stringify(sortedVertices.map(v => `${v.id}-o:${v.order}`))
   );
+  console.log('\n------- 3. Find SCCs in reverse topological order:\n');
+  sortedVertices.forEach(v => (v.explored = false));
+  let ccIndex = 0;
+  for (let i = 0; i < sortedVertices.length; i++) {
+    const vertex = sortedVertices[i];
+    if (!vertex.explored) {
+      ccIndex += 1;
+      findConnectedComponentsFromUndirectedGraph(graph, vertex, ccIndex, verticesMap, edgesMap);
+    }
+  }
   return sortedVertices;
 }
 
-const res = computeConnectedComponentsForDirectedAcyclicGraph(graph).map(v => `${v.id}-${v.order}`);
-// console.log('\ncc for Directed Acyclic Graph : ', JSON.stringify(res));
+const res = computeConnectedComponentsForDirectedAcyclicGraph(graph).map(v => `${v.connectedComponentsIndex}-${v.id}`);
+console.log('\ncc for Directed Acyclic Graph : ', JSON.stringify(res));
