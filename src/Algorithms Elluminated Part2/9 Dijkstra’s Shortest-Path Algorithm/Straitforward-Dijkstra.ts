@@ -30,25 +30,45 @@ const T: DirectedVertex = {
   in_edges: ['VT', 'WT'],
 };
 
-const _SV: DirectedEdge = { id: 'SV', source: 'S', target: 'V' };
-const _SW: DirectedEdge = { id: 'SW', source: 'S', target: 'W' };
-const _VW: DirectedEdge = { id: 'VW', source: 'V', target: 'W' };
-const _VT: DirectedEdge = { id: 'VT', source: 'V', target: 'T' };
-const _WT: DirectedEdge = { id: 'WT', source: 'W', target: 'T' };
+const _SV: DirectedEdge = { id: 'SV', source: 'S', target: 'V', length: 1 };
+const _SW: DirectedEdge = { id: 'SW', source: 'S', target: 'W', length: 4 };
+const _VW: DirectedEdge = { id: 'VW', source: 'V', target: 'W', length: 2 };
+const _VT: DirectedEdge = { id: 'VT', source: 'V', target: 'T', length: 6 };
+const _WT: DirectedEdge = { id: 'WT', source: 'W', target: 'T', length: 3 };
 
 const graph: DirectedGraph = {
   vertices: [S, V, W, T],
   edges: [_SV, _SW, _VW, _VT, _WT],
 };
 
-export function StraitforwardDijkstra(graph: DirectedGraph, start: DirectedVertex): DirectedVertex[] {
-  const verticesMap = getVerticesMap(graph);
+export function StraightforwardDijkstra(graph: DirectedGraph, start: DirectedVertex): DirectedVertex[] {
+  const verticesMap = getVerticesMap(graph, v => {
+    v.length = Infinity;
+    V.out_edges = [];
+    return v;
+  });
   const edgesMap = getEdgeMap(graph);
-  const X: DirectedVertex[] = [start];
-  for (let i = 0; i < X.length; i++) {
-    const element = X[i];
+  let edges = [...start.out_edges!];
+  while (edges.length > 0) {
+    let minEdge: DirectedEdge = edgesMap[edges[0]];
+    for (let e = 0; e < edges.length; e++) {
+      const edge: DirectedEdge = edgesMap[edges[e]];
+      const source: DirectedVertex = verticesMap[edge.source];
+      const edgeScore = source.length! + edge.length!;
+      if (edgeScore < minEdge.score!) {
+        minEdge = edge;
+      }
+    }
+    const source = verticesMap[minEdge.target];
+    const target = verticesMap[minEdge.target];
+    target.length = source.length! + minEdge.length!;
+    edges = [...edges, ...target.out_edges!];
   }
+
   return [start];
 }
 
-console.log('Print nodes in boustrophedon order: ', JSON.stringify(BFS(graph, v1).map(v => `${v.id}`)));
+console.log(
+  'Print shortest path from start vertex to other vertices in graph: ',
+  JSON.stringify(StraightforwardDijkstra(graph, S).map(v => `${v.id}-${v.length}`))
+);

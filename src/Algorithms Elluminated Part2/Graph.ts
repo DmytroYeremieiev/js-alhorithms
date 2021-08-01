@@ -1,13 +1,14 @@
 type id = string | number;
 
 export interface Edge {
-  value?: number;
+  length?: number;
+  score?: number;
   id: id;
 }
 
 export interface Vertex {
   id: id;
-  score?: number;
+  length?: number;
   explored?: boolean;
   connectedComponentsIndex?: number;
   layer?: number;
