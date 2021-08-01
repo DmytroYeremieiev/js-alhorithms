@@ -1,12 +1,13 @@
 type id = string | number;
 
 export interface Edge {
-  weight?: number;
+  value?: number;
   id: id;
 }
 
 export interface Vertex {
   id: id;
+  score?: number;
   explored?: boolean;
   connectedComponentsIndex?: number;
   layer?: number;
@@ -21,8 +22,8 @@ export interface UndirectedEdge extends Edge {
 }
 
 export interface DirectedVertex extends Vertex {
-  out_edges: id[];
-  in_edges: id[];
+  out_edges?: id[];
+  in_edges?: id[];
   order?: number;
 }
 
