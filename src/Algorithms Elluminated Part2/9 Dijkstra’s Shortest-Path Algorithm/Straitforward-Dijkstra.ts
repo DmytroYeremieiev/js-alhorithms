@@ -44,28 +44,46 @@ const graph: DirectedGraph = {
 export function StraightforwardDijkstra(graph: DirectedGraph, start: DirectedVertex): DirectedVertex[] {
   const verticesMap = getVerticesMap(graph, v => {
     v.length = Infinity;
-    V.out_edges = [];
+    if (!v.out_edges) v.out_edges = [];
     return v;
   });
-  const edgesMap = getEdgeMap(graph);
-  let edges = [...start.out_edges!];
-  while (edges.length > 0) {
-    let minEdge: DirectedEdge = edgesMap[edges[0]];
-    for (let e = 0; e < edges.length; e++) {
-      const edge: DirectedEdge = edgesMap[edges[e]];
+  start.length = 0;
+  // const edgesMap = getEdgeMap(graph);
+
+  const X = new Map([[start.id, start]]);
+  const V_X = new Map(Object.entries(verticesMap));
+  V_X.delete(start.id);
+  console.log('Initialize X, V_X, while V_X.size > 0');
+  while (V_X.size > 0) {
+    let minEdge = null;
+    console.log(`...X: ${JSON.stringify(Array.from(X.keys()))}, V_X.size: ${JSON.stringify(Array.from(V_X.keys()))}`);
+    console.log(`...Find an edge from X to V_T set:`);
+    for (let i = 0; i < graph.edges.length; i++) {
+      const edge = graph.edges[i];
+      if (!X.has(edge.source) || !V_X.has(edge.target)) {
+        continue;
+      }
       const source: DirectedVertex = verticesMap[edge.source];
-      const edgeScore = source.length! + edge.length!;
-      if (edgeScore < minEdge.score!) {
+      edge.score = source.length! + edge.length!;
+      if (!minEdge || edge.score < minEdge?.score!) {
         minEdge = edge;
+        console.log(
+          `......such an edge: '${edge.id}' minimizing Dijkstra score: (source.length + edge.length): ${edge.score}`
+        );
       }
     }
-    const source = verticesMap[minEdge.target];
-    const target = verticesMap[minEdge.target];
-    target.length = source.length! + minEdge.length!;
-    edges = [...edges, ...target.out_edges!];
+    const source = verticesMap[minEdge?.source!];
+    const target = verticesMap[minEdge?.target!];
+    target.length = source.length! + minEdge?.length!;
+    console.log(
+      `...found such an edge: '${minEdge?.id}' minimizing Dijkstra score: (source.length + edge.length): ${target.length}`
+    );
+    console.log(`...move '${target.id}' from 'V_X' to 'X' set\n`);
+    V_X.delete(target.id);
+    X.set(target.id, target);
   }
 
-  return [start];
+  return graph.vertices;
 }
 
 console.log(

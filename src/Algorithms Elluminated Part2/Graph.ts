@@ -1,4 +1,4 @@
-type id = string | number;
+type id = string;
 
 export interface Edge {
   length?: number;
