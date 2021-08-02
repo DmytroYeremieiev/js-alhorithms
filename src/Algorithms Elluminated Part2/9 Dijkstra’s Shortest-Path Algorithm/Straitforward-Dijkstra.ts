@@ -57,28 +57,27 @@ export function StraightforwardDijkstra(graph: DirectedGraph, start: DirectedVer
   while (V_X.size > 0) {
     let minEdge = null;
     console.log(`...X: ${JSON.stringify(Array.from(X.keys()))}, V_X.size: ${JSON.stringify(Array.from(V_X.keys()))}`);
-    console.log(`...Find an edge from X to V_T set:`);
+    console.log(`...Find an edge from X to V_T set with minimizing Dijkstra score: (source.length + edge.length)`);
     for (let i = 0; i < graph.edges.length; i++) {
       const edge = graph.edges[i];
       if (!X.has(edge.source) || !V_X.has(edge.target)) {
+        console.log(`......skip an edge: '${edge.id}' not connecting X and V_X`);
         continue;
       }
       const source: DirectedVertex = verticesMap[edge.source];
       edge.score = source.length! + edge.length!;
       if (!minEdge || edge.score < minEdge?.score!) {
         minEdge = edge;
-        console.log(
-          `......such an edge: '${edge.id}' minimizing Dijkstra score: (source.length + edge.length): ${edge.score}`
-        );
+        console.log(`......an edge: '${edge.id}' with Dijkstra score: ${edge.score}`);
+      } else {
+        console.log(`......skip an edge: '${edge.id}' with Dijkstra score: ${edge.score}`);
       }
     }
     const source = verticesMap[minEdge?.source!];
     const target = verticesMap[minEdge?.target!];
     target.length = source.length! + minEdge?.length!;
-    console.log(
-      `...found such an edge: '${minEdge?.id}' minimizing Dijkstra score: (source.length + edge.length): ${target.length}`
-    );
-    console.log(`...move '${target.id}' from 'V_X' to 'X' set\n`);
+    console.log(`...pick the edge: '${minEdge?.id}' with minimizing Dijkstra score: ${target.length}`);
+    console.log(`...move '${target.id}' vertex from 'V_X' to 'X' set\n`);
     V_X.delete(target.id);
     X.set(target.id, target);
   }
