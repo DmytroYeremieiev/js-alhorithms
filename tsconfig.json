@@ -2,7 +2,7 @@
   // "compileOnSave": true,
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2016",
+    "target": "es2017",
     "jsx": "preserve",
     "sourceMap": true,
     "outDir": "build/",
