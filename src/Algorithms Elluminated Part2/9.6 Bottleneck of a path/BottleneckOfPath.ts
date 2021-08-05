@@ -65,7 +65,7 @@ export function BottleneckOfPath(graph: DirectedGraph, start: DirectedVertex): D
         continue;
       }
       const source: DirectedVertex = verticesMap[edge.source];
-      edge.score = Math.max(source.length!, edge.length!); // Bottleneck of a path
+      edge.score = Math.max(source.length!, edge.length!); // Bottleneck on a path
       if (!minEdge || edge.score < minEdge?.score!) {
         minEdge = edge;
         console.log(
@@ -79,7 +79,7 @@ export function BottleneckOfPath(graph: DirectedGraph, start: DirectedVertex): D
     }
     const source = verticesMap[minEdge?.source!];
     const target = verticesMap[minEdge?.target!];
-    target.length = Math.max(source.length!, minEdge?.length!); // smallest Bottleneck on a path to target
+    target.length = Math.max(source.length!, minEdge?.length!); // Bottleneck on a path to target
     console.log(`...pick the edge: '${minEdge?.id}' to '${target.id}' with smallest path Bottleneck: ${target.length}`);
     console.log(`...move '${target.id}' vertex from 'V_X' to 'X' set\n`);
     V_X.delete(target.id);
