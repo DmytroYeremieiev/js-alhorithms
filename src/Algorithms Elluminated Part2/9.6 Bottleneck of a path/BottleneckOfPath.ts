@@ -30,11 +30,11 @@ const T: DirectedVertex = {
   in_edges: ['VT', 'WT'],
 };
 
-const _SV: DirectedEdge = { id: 'SV', source: 'S', target: 'V', length: 1 };
-const _SW: DirectedEdge = { id: 'SW', source: 'S', target: 'W', length: 4 };
+const _SV: DirectedEdge = { id: 'SV', source: 'S', target: 'V', length: 3 };
+const _SW: DirectedEdge = { id: 'SW', source: 'S', target: 'W', length: 1 };
 const _VW: DirectedEdge = { id: 'VW', source: 'V', target: 'W', length: 2 };
 const _VT: DirectedEdge = { id: 'VT', source: 'V', target: 'T', length: 6 };
-const _WT: DirectedEdge = { id: 'WT', source: 'W', target: 'T', length: 3 };
+const _WT: DirectedEdge = { id: 'WT', source: 'W', target: 'T', length: 4 };
 
 const graph: DirectedGraph = {
   vertices: [S, V, W, T],
@@ -57,7 +57,7 @@ export function BottleneckOfPath(graph: DirectedGraph, start: DirectedVertex): D
   while (V_X.size > 0) {
     let minEdge = null;
     console.log(`...X: ${JSON.stringify(Array.from(X.keys()))}, V_X.size: ${JSON.stringify(Array.from(V_X.keys()))}`);
-    console.log(`...Find an edge from X to V_T set with minimizing Dijkstra score: (source.length + edge.length)`);
+    console.log(`...Find an edge from X to V_T set with minimum Bottleneck: Math.max(length(v), length(v, w)`);
     for (let i = 0; i < graph.edges.length; i++) {
       const edge = graph.edges[i];
       if (!X.has(edge.source) || !V_X.has(edge.target)) {
@@ -65,18 +65,22 @@ export function BottleneckOfPath(graph: DirectedGraph, start: DirectedVertex): D
         continue;
       }
       const source: DirectedVertex = verticesMap[edge.source];
-      edge.score = source.length! + edge.length!;
+      edge.score = Math.max(source.length!, edge.length!);
       if (!minEdge || edge.score < minEdge?.score!) {
         minEdge = edge;
-        console.log(`......an edge: '${edge.id}' with Dijkstra score: ${edge.score}`);
+        console.log(
+          `......the latest edge: '${edge.id}', on the path with a maximum length of one of its edges(Bottleneck): ${edge.score}`
+        );
       } else {
-        console.log(`......skip an edge: '${edge.id}' with Dijkstra score: ${edge.score}`);
+        console.log(
+          `......skip the latest edge: '${edge.id}', on the path with a maximum length of one of its edges(Bottleneck): ${edge.score}`
+        );
       }
     }
     const source = verticesMap[minEdge?.source!];
     const target = verticesMap[minEdge?.target!];
-    target.length = source.length! + minEdge?.length!;
-    console.log(`...pick the edge: '${minEdge?.id}' with minimizing Dijkstra score: ${target.length}`);
+    target.length = Math.max(source.length!, minEdge?.length!);
+    console.log(`...pick the edge: '${minEdge?.id}' for the path with minimum Bottleneck: ${target.length}`);
     console.log(`...move '${target.id}' vertex from 'V_X' to 'X' set\n`);
     V_X.delete(target.id);
     X.set(target.id, target);
@@ -93,6 +97,6 @@ export function BottleneckOfPath(graph: DirectedGraph, start: DirectedVertex): D
 // the smallest bottleneck of any s-v path. Your algorithm should run in O(mn) time,
 // where m and n denote the number of edges and vertices, respectively.
 console.log(
-  'Define the bottleneck of a path to be the maximum length of one of its edges: ',
+  'Define the smallest bottlenecks of a path: ',
   JSON.stringify(BottleneckOfPath(graph, S).map(v => `${v.id}-${v.length}`))
 );
