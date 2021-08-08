@@ -57,12 +57,28 @@ class Heap<T> {
     const start = level_size - 1;
     console.log(`level ${level}, starts at position: ${start}, size: ${level_size}`);
     const elements = this.bin_tree_arr.slice(start, start + level_size);
-    console.log(...elements);
+    let offset = null;
+    let distance = null;
+    if (level === 0) {
+      distance = 0;
+      offset = Math.pow(2, total_levels - level - 1) - 1;
+    } else {
+      distance = Math.pow(2, total_levels - level) - 1;
+      offset = Math.pow(2, total_levels - level - 1) - 1;
+    }
+    console.log(`distance: ${distance}, offset: ${offset}`);
+    let out_str = `${this.getSpaces(offset)}`;
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      const space = i === elements.length - 1 ? this.getSpaces(offset) : this.getSpaces(distance);
+      out_str += element + space;
+    }
+    console.log(out_str);
   }
   getSpaces(count: number): string {
     let res = '';
     for (let i = 0; i < count; i++) {
-      res += ' ';
+      res += '-';
     }
     return res;
   }
