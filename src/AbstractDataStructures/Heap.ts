@@ -1,9 +1,11 @@
 // Other names Priority Queue
 class Heap<T> {
-  bin_tree_arr: T[] = [];
+  bin_tree_arr: number[] = [];
   length = 0;
   hash: { [key: string]: T } = {};
-  constructor(array: T[], geyKey: (el: T) => number) {
+  getKey: (el: T) => number;
+  constructor(array: T[], getKey: (el: T) => number) {
+    this.getKey = getKey || (el => +el);
     for (let i = 0; i < array.length; i++) {
       const el = array[i];
       this.insert(el);
@@ -26,7 +28,8 @@ class Heap<T> {
   insert(el: T) {
     this.length = this.length + 1;
     const initial_position = this.length - 1;
-    this.bin_tree_arr[initial_position] = el;
+    const key = this.getKey(el);
+    this.bin_tree_arr[initial_position] = key;
     this.bubble_up(initial_position);
   }
   swap(position1: number, position2: number) {
@@ -68,6 +71,8 @@ class Heap<T> {
     }
     console.log(`distance: ${distance}, offset: ${offset}`);
     let out_str = `${this.getSpaces(offset)}`;
+    const latestEl = this.bin_tree_arr[this.bin_tree_arr.length - 1];
+    const maxKeySpace = (Math.log(latestEl) * Math.LOG10E + 1) | 0;
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
       const space = i === elements.length - 1 ? this.getSpaces(offset) : this.getSpaces(distance);
@@ -78,7 +83,7 @@ class Heap<T> {
   getSpaces(count: number): string {
     let res = '';
     for (let i = 0; i < count; i++) {
-      res += '-';
+      res += '—';
     }
     return res;
   }
