@@ -10,7 +10,7 @@ class Heap<T> {
     }
   }
   private get_parent_position(n: number): number {
-    if (n < 2) return -1;
+    if (n === 0) return -1;
     return Math.floor(n / 2);
   }
   private get_left_child_position(n: number): number {
@@ -43,7 +43,22 @@ class Heap<T> {
       this.bubble_up(this.get_parent_position(p));
     }
   }
+  log() {
+    let l = 0;
+    const levels = Math.ceil(Math.log2(this.length));
+    console.log(`Total length: ${this.length} and heap levels ${levels}`);
+    while (l < levels) {
+      const level_size = Math.pow(2, l);
+      const start = level_size - 1;
+      // console.log(`level ${l}, starts at position: ${start}, size: ${level_size}`);
+      const elements = this.bin_tree_arr.slice(start, start + level_size);
+      console.log(...elements);
+      l++;
+    }
+  }
   // ExtractMin(): T {}
 }
-
-const heap = new Heap([4, 4, 8, 9, 4, 12, 9, 11, 13], el => el);
+//[4, 4, 8, 9, 4, 12, 9, 11, 13]
+const heap = new Heap([13, 11, 9, 12, 4, 9, 8, 4, 4], el => el);
+heap.log();
+// console.log(`Heap, ${heap.length}, ${heap.bin_tree_arr.length}: ${JSON.stringify(heap.bin_tree_arr)}`);
