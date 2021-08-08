@@ -45,20 +45,30 @@ class Heap<T> {
   }
   log() {
     let l = 0;
-    const levels = Math.ceil(Math.log2(this.length));
-    console.log(`Total length: ${this.length} and heap levels ${levels}`);
-    while (l < levels) {
-      const level_size = Math.pow(2, l);
-      const start = level_size - 1;
-      // console.log(`level ${l}, starts at position: ${start}, size: ${level_size}`);
-      const elements = this.bin_tree_arr.slice(start, start + level_size);
-      console.log(...elements);
+    const total_levels = Math.ceil(Math.log2(this.length));
+    console.log(`Total length: ${this.length} and heap levels ${total_levels}`);
+    while (l < total_levels) {
+      this.printLevel(l, total_levels);
       l++;
     }
+  }
+  printLevel(level: number, total_levels: number) {
+    const level_size = Math.pow(2, level);
+    const start = level_size - 1;
+    console.log(`level ${level}, starts at position: ${start}, size: ${level_size}`);
+    const elements = this.bin_tree_arr.slice(start, start + level_size);
+    console.log(...elements);
+  }
+  getSpaces(count: number): string {
+    let res = '';
+    for (let i = 0; i < count; i++) {
+      res += ' ';
+    }
+    return res;
   }
   // ExtractMin(): T {}
 }
 //[4, 4, 8, 9, 4, 12, 9, 11, 13]
-const heap = new Heap([13, 11, 9, 12, 4, 9, 8, 4, 4], el => el);
+const heap = new Heap([4, 4, 8, 9, 4, 12, 9, 11, 13], el => el);
 heap.log();
 // console.log(`Heap, ${heap.length}, ${heap.bin_tree_arr.length}: ${JSON.stringify(heap.bin_tree_arr)}`);
