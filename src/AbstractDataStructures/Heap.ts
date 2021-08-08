@@ -50,12 +50,15 @@ class Heap<T> {
     let l = 0;
     const total_levels = Math.ceil(Math.log2(this.length));
     console.log(`Total length: ${this.length} and heap levels ${total_levels}`);
+    const sorted = this.bin_tree_arr.sort((a, b) => a - b);
+    const maxElement = sorted[sorted.length - 1];
+    const maxKeyLength = (Math.log(maxElement) * Math.LOG10E + 1) | 0;
     while (l < total_levels) {
-      this.printLevel(l, total_levels);
+      this.printLevel(l, total_levels, maxKeyLength);
       l++;
     }
   }
-  printLevel(level: number, total_levels: number) {
+  printLevel(level: number, total_levels: number, maxKeyLength: number) {
     const level_size = Math.pow(2, level);
     const start = level_size - 1;
     // console.log(`level ${level}, starts at position: ${start}, size: ${level_size}`);
@@ -70,8 +73,6 @@ class Heap<T> {
       offset = Math.pow(2, total_levels - level - 1) - 1;
     }
     // console.log(`distance: ${distance}, offset: ${offset}, keys: ${keys.length}`);
-    const latestKey = this.bin_tree_arr[this.bin_tree_arr.length - 1];
-    const maxKeyLength = (Math.log(latestKey) * Math.LOG10E + 1) | 0;
     let out_str = `${this.fillSpace(offset, maxKeyLength + 2)}`;
     const fillerArray = Array.from(Array(level_size - keys.length));
     const _keys = [...keys, ...fillerArray];
@@ -99,7 +100,13 @@ class Heap<T> {
   }
   // ExtractMin(): T {}
 }
-//[4, 4, 8, 9, 4, 12, 9, 11, 13]
+
 const heap = new Heap([4, 4, 8, 9, 4, 12, 9, 11, 13], el => el);
+heap.log();
+heap.insert(1);
+heap.insert(10);
+heap.insert(16);
+heap.insert(14);
+heap.insert(3);
 heap.log();
 // console.log(`Heap, ${heap.length}, ${heap.bin_tree_arr.length}: ${JSON.stringify(heap.bin_tree_arr)}`);
