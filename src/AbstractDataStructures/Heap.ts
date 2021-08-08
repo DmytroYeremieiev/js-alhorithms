@@ -72,14 +72,17 @@ class Heap<T> {
     // console.log(`distance: ${distance}, offset: ${offset}, keys: ${keys.length}`);
     const latestKey = this.bin_tree_arr[this.bin_tree_arr.length - 1];
     const maxKeyLength = (Math.log(latestKey) * Math.LOG10E + 1) | 0;
-    let out_str = `${this.fillSpace(offset, maxKeyLength)}`;
+    let out_str = `${this.fillSpace(offset, maxKeyLength + 2)}`;
     const fillerArray = Array.from(Array(level_size - keys.length));
     const _keys = [...keys, ...fillerArray];
     for (let i = 0; i < _keys.length; i++) {
       const element = _keys[i];
-      const space = this.fillSpace(i === keys.length - 1 ? offset : distance, maxKeyLength);
-      out_str += this.wrapKeyInSpace(element ?? '', maxKeyLength, element ? '0' : '–') + space;
+      const between = this.fillSpace(i === keys.length - 1 ? 0 : distance, maxKeyLength + 2);
+      const node = this.wrapKeyInSpace(element ?? '', maxKeyLength, element ? '0' : '–');
+      const nodeStr = element ? ` ${node} ` : `–${node}–`;
+      out_str += `${nodeStr}${between}`;
     }
+    out_str += `${this.fillSpace(offset, maxKeyLength + 2)}`;
     console.log(out_str);
   }
   wrapKeyInSpace(key: number, maxKeyLength: number, filler = '0') {
