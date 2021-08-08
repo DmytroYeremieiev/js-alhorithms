@@ -69,26 +69,26 @@ class Heap<T> {
       distance = Math.pow(2, total_levels - level) - 1;
       offset = Math.pow(2, total_levels - level - 1) - 1;
     }
-    // console.log(`distance: ${distance}, offset: ${offset}`);
-    const latestEl = this.bin_tree_arr[this.bin_tree_arr.length - 1];
-    const maxKeyLength = (Math.log(latestEl) * Math.LOG10E + 1) | 0;
+    // console.log(`distance: ${distance}, offset: ${offset}, keys: ${keys.length}`);
+    const latestKey = this.bin_tree_arr[this.bin_tree_arr.length - 1];
+    const maxKeyLength = (Math.log(latestKey) * Math.LOG10E + 1) | 0;
     let out_str = `${this.fillSpace(offset, maxKeyLength)}`;
-    for (let i = 0; i < keys.length; i++) {
-      const element = keys[i];
-      const space =
-        i === keys.length - 1 ? this.fillSpace(offset, maxKeyLength) : this.fillSpace(distance, maxKeyLength);
-      out_str += this.wrapKeyInSpace(element, maxKeyLength) + space;
+    const fillerArray = Array.from(Array(level_size - keys.length));
+    const _keys = [...keys, ...fillerArray];
+    for (let i = 0; i < _keys.length; i++) {
+      const element = _keys[i];
+      const space = this.fillSpace(i === keys.length - 1 ? offset : distance, maxKeyLength);
+      out_str += this.wrapKeyInSpace(element ?? '', maxKeyLength, element ? '0' : '–') + space;
     }
     console.log(out_str);
   }
-  wrapKeyInSpace(key: number, maxKeyLength: number) {
+  wrapKeyInSpace(key: number, maxKeyLength: number, filler = '0') {
     const keyLength = (Math.log(key) * Math.LOG10E + 1) | 0;
     const offset = maxKeyLength - keyLength;
-    return `${this.fillSpace(offset, 1, '0')}${key}`;
+    return `${this.fillSpace(offset, 1, filler)}${key}`;
   }
   fillSpace(count: number, multiplier: number, filler = '–'): string {
     let res = '';
-
     for (let i = 0; i < count * multiplier; i++) {
       res += filler;
     }
