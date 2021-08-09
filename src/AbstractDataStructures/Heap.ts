@@ -2,13 +2,14 @@
 class Heap<T> {
   bin_tree_arr: number[] = [];
   length = 0;
-  hash: { [key: string]: T } = {};
+  hash: Map<number, T> = new Map();
   getKey: (el: T) => number;
   constructor(array: T[], getKey: (el: T) => number) {
     this.getKey = getKey || (el => +el);
     for (let i = 0; i < array.length; i++) {
       const el = array[i];
       this.insert(el);
+      this.hash.set(this.getKey(el), el);
     }
   }
   private get_parent_position(n: number): number {
@@ -16,13 +17,13 @@ class Heap<T> {
     return Math.floor(n / 2);
   }
   private get_left_child_position(n: number): number {
-    const position = 2 * n;
-    if (position > length - 1) return -1;
-    return 2 * n;
+    const position = 2 * n + 1;
+    if (position > this.bin_tree_arr.length) return -1;
+    return position;
   }
   private get_right_child_position(n: number): number {
-    const position = 2 * n + 1;
-    if (position > length - 1) return -1;
+    const position = 2 * n + 1 + 1;
+    if (position > this.bin_tree_arr.length) return -1;
     return position;
   }
   insert(el: T) {
@@ -32,10 +33,32 @@ class Heap<T> {
     this.bin_tree_arr[initial_position] = key;
     this.bubble_up(initial_position);
   }
+  extractMin(): T | undefined {
+    const lastKey = this.bin_tree_arr.pop();
+    if (!lastKey) return;
+    const firstKey = this.bin_tree_arr[0];
+    this.bin_tree_arr[0] = lastKey;
+    this.bubble_down(0);
+    return this.hash.get(firstKey);
+  }
+
   swap(position1: number, position2: number) {
     const temp = this.bin_tree_arr[position1];
     this.bin_tree_arr[position1] = this.bin_tree_arr[position2];
     this.bin_tree_arr[position2] = temp;
+  }
+  bubble_down(p: number) {
+    const item = this.bin_tree_arr[p];
+    const leftChildPosition = this.get_left_child_position(p);
+    const rightChildPosition = this.get_right_child_position(p);
+    const minChildPosition =
+      this.bin_tree_arr[leftChildPosition] > this.bin_tree_arr[rightChildPosition]
+        ? rightChildPosition
+        : leftChildPosition;
+    if (item > this.bin_tree_arr[minChildPosition]) {
+      this.swap(p, minChildPosition);
+      this.bubble_down(minChildPosition);
+    }
   }
   bubble_up(p: number) {
     if (this.get_parent_position(p) === -1) {
@@ -98,7 +121,6 @@ class Heap<T> {
     }
     return res;
   }
-  // ExtractMin(): T {}
 }
 
 const heap = new Heap([4, 4, 8, 9, 4, 12, 9, 11, 13], el => el);
@@ -109,4 +131,8 @@ heap.insert(16);
 heap.insert(14);
 heap.insert(3);
 heap.log();
-// console.log(`Heap, ${heap.length}, ${heap.bin_tree_arr.length}: ${JSON.stringify(heap.bin_tree_arr)}`);
+console.log(`extractMin()`, heap.extractMin());
+heap.log();
+console.log(`extractMin()`, heap.extractMin());
+heap.log();
+console.log(`Heap, ${heap.length}, ${heap.bin_tree_arr.length}`);
