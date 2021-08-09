@@ -12,7 +12,7 @@ class Heap<T> {
   }
   private get_parent_position(n: number): number {
     if (n === 0) return -1;
-    return Math.floor(n / 2);
+    return Math.floor((n - 1) / 2);
   }
   private get_left_child_position(n: number): number {
     const position = 2 * n + 1;
@@ -25,23 +25,24 @@ class Heap<T> {
     return position;
   }
   insert(el: T, log = false) {
+    if (log) console.log(`\nHeap.insert ${el}:`);
+    if (log) this.log();
     const end_position = this.bin_tree_arr.length;
     const key = this.getKey(el);
     this.bin_tree_arr[end_position] = key;
     this.hash.set(key, el);
-    if (log) console.log(`\nheap.insert ${el}:`);
-    if (log) this.log();
     this.bubble_up(end_position, log);
     if (log) this.log();
   }
   extractMin(log = false): T | undefined {
+    if (log) console.log(`\nHeap.extractMin`);
+    if (log) this.log();
     const lastKey = this.bin_tree_arr.pop();
     if (!lastKey) return;
     const firstKey = this.bin_tree_arr[0];
     this.bin_tree_arr[0] = lastKey;
     const el = this.hash.get(firstKey);
-    if (log) console.log(`\nheap.extractMin, ${el}`);
-    if (log) this.log();
+    if (log) console.log(`\n...extracted ${el}, replaced with ${lastKey}`);
     this.bubble_down(0, log);
     if (log) this.log();
     return el;
@@ -81,7 +82,9 @@ class Heap<T> {
     let l = 0;
     const total_levels = Math.floor(Math.log2(this.bin_tree_arr.length));
     console.log(
-      `...total levels ${total_levels}, inner array(${this.bin_tree_arr.length}): ${JSON.stringify(this.bin_tree_arr)}`
+      `\n...total levels ${total_levels}, inner array(${this.bin_tree_arr.length}): ${JSON.stringify(
+        this.bin_tree_arr
+      )}`
     );
     const sorted = Array.from(this.bin_tree_arr).sort((a, b) => a - b);
     const maxElement = sorted[sorted.length - 1];
