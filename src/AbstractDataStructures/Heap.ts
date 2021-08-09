@@ -1,7 +1,6 @@
 // Other names Priority Queue
 class Heap<T> {
   bin_tree_arr: number[] = [];
-  length = 0;
   hash: Map<number, T> = new Map();
   getKey: (el: T) => number;
   constructor(array: T[], getKey: (el: T) => number) {
@@ -10,6 +9,7 @@ class Heap<T> {
       const el = array[i];
       this.insert(el);
     }
+    this.log();
   }
   private get_parent_position(n: number): number {
     if (n === 0) return -1;
@@ -26,20 +26,24 @@ class Heap<T> {
     return position;
   }
   insert(el: T) {
-    this.length = this.length + 1;
-    const initial_position = this.length - 1;
+    const end_position = this.bin_tree_arr.length;
     const key = this.getKey(el);
-    this.bin_tree_arr[initial_position] = key;
+    this.bin_tree_arr[end_position] = key;
     this.hash.set(key, el);
-    this.bubble_up(initial_position);
+    console.log(`\nheap.insert, ${el}`);
+    this.bubble_up(end_position);
+    this.log();
   }
   extractMin(): T | undefined {
     const lastKey = this.bin_tree_arr.pop();
     if (!lastKey) return;
     const firstKey = this.bin_tree_arr[0];
     this.bin_tree_arr[0] = lastKey;
+    const el = this.hash.get(firstKey);
+    console.log(`\nheap.extractMin, ${el}`);
     this.bubble_down(0);
-    return this.hash.get(firstKey);
+    this.log();
+    return el;
   }
 
   swap(position1: number, position2: number) {
@@ -62,19 +66,23 @@ class Heap<T> {
     }
   }
   bubble_up(p: number) {
-    if (this.get_parent_position(p) === -1) {
+    const parentPosition = this.get_parent_position(p);
+    if (parentPosition === -1) {
       return; /* at root of heap, no parent */
     }
-    if (this.bin_tree_arr[this.get_parent_position(p)] > this.bin_tree_arr[p]) {
-      this.swap(p, this.get_parent_position(p));
-      this.bubble_up(this.get_parent_position(p));
+    if (this.bin_tree_arr[parentPosition] > this.bin_tree_arr[p]) {
+      console.log(`bubble_up, swap ${this.bin_tree_arr[p]} with ${this.bin_tree_arr[parentPosition]}`);
+      this.swap(p, parentPosition);
+      this.bubble_up(parentPosition);
     }
   }
   log() {
-    let l = 0;
-    const total_levels = Math.ceil(Math.log2(this.length));
-    console.log(`Total length: ${this.length} and heap levels ${total_levels}`);
-    console.log(`inner array: `, JSON.stringify(this.bin_tree_arr));
+    const total_levels = Math.ceil(Math.log2(this.bin_tree_arr.length));
+    console.log(
+      `...logging, total length: ${this.bin_tree_arr.length} and heap levels ${total_levels} `,
+      `inner array: `,
+      JSON.stringify(this.bin_tree_arr)
+    );
     const sorted = Array.from(this.bin_tree_arr).sort((a, b) => a - b);
     const maxElement = sorted[sorted.length - 1];
     const maxKeyLength = (Math.log(maxElement) * Math.LOG10E + 1) | 0;
@@ -126,15 +134,11 @@ class Heap<T> {
 }
 
 const heap = new Heap([4, 2, 8, 9, 4, 12, 9, 11, 13], el => el);
-heap.log();
 heap.insert(1);
 heap.insert(10);
 heap.insert(16);
 heap.insert(14);
 heap.insert(3);
-heap.log();
-console.log(`extractMin()`, heap.extractMin());
-heap.log();
-// console.log(`extractMin()`, heap.extractMin());
-// heap.log();
-console.log(`Heap, ${heap.length}, ${heap.bin_tree_arr.length}`);
+heap.extractMin();
+heap.extractMin();
+heap.extractMin();
