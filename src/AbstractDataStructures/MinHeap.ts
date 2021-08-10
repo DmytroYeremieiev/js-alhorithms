@@ -1,5 +1,5 @@
 // Other names Priority Queue
-class Heap<T> {
+class MinHeap<T> {
   bin_tree_arr: number[] = [];
   hash: Map<number, T> = new Map();
   getKey: (el: T) => number;
@@ -147,7 +147,7 @@ class Heap<T> {
   }
 }
 
-const heap = new Heap([4, 2, 8, 9, 4, 12, 9, 11, 13], el => el);
+const heap = new MinHeap([4, 2, 8, 9, 4, 12, 9, 11, 13], el => el);
 heap.insert(11, true);
 heap.insert(1, true);
 heap.insert(10, true);
