@@ -77,7 +77,7 @@ export function StraightforwardDijkstra(graph: DirectedGraph, start: DirectedVer
     const target = verticesMap[minEdge?.target!];
     target.length = source.length! + minEdge?.length!;
     console.log(`...pick the edge: '${minEdge?.id}' with minimizing Dijkstra score: ${target.length}`);
-    console.log(`...move '${target.id}' vertex from 'V_X' to 'X' set\n`);
+    console.log(`...move the edge tail '${target.id}' vertex from 'V_X' to 'X' set\n`);
     V_X.delete(target.id);
     X.set(target.id, target);
   }
