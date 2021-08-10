@@ -81,6 +81,12 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
       this.insert(el);
     }
   }
+  size(): number {
+    return this.bin_tree_arr.length;
+  }
+  isEmpty(): boolean {
+    return Boolean(this.bin_tree_arr.length);
+  }
   get_parent_position(n: number): number {
     if (n === 0) return -1;
     return Math.floor((n - 1) / 2);
