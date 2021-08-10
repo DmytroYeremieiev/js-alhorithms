@@ -87,6 +87,37 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
   isEmpty(): boolean {
     return Boolean(this.bin_tree_arr.length);
   }
+  delete(position: number): void {
+    const deleteKey = this.bin_tree_arr[position];
+    if (this.debug) {
+      console.log(`\nHeap.delete a ${deleteKey} key, on a ${position}-th position:`);
+      console.log(`...before:`);
+      this.log();
+    }
+    if (this.bin_tree_arr.length === 0 || !deleteKey) return;
+
+    const lastKey = this.bin_tree_arr.pop();
+    if (lastKey === deleteKey) {
+      this.hash.delete(position);
+      if (this.debug) {
+        console.log(`\n...after:`);
+        this.log();
+      }
+      return;
+    }
+    this.bin_tree_arr[position] = lastKey!;
+    if (this.debug) {
+      console.log(`\n...${deleteKey} replacing with ${lastKey}:`);
+      this.log();
+      console.log(`...restoring balance:`);
+    }
+    this.bubble_down(position);
+    if (this.debug) {
+      console.log(`\n...rebalanced:`);
+      this.log();
+    }
+    this.hash.delete(position);
+  }
   get_parent_position(n: number): number {
     if (n === 0) return -1;
     return Math.floor((n - 1) / 2);

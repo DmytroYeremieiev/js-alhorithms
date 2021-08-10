@@ -17,6 +17,7 @@ export class MinHeap<T> extends Heap<T> {
   }
   bubble_down(p: number) {
     const item = this.bin_tree_arr[p];
+    if (!item) return;
     const leftChildPosition = this.get_left_child_position(p);
     const rightChildPosition = this.get_right_child_position(p);
     const minChildPosition =
@@ -53,3 +54,6 @@ heap.insert(3);
 heap.extractMin();
 heap.extractMin();
 heap.extractMin();
+heap.delete(0);
+heap.delete(heap.size() - 1);
+heap.delete(Math.floor(heap.size() / 2));
