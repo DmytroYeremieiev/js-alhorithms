@@ -18,7 +18,10 @@
     "watch": false,
     // "watch": true
     // "suppressImplicitAnyIndexErrors": true //Suppress noImplicitAny errors for indexing objects lacking index signatures.
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@data-structures/*": ["src/AbstractDataStructures/*"]
+    }
   },
   // "ts-node": {
   //   "transpileOnly": true,

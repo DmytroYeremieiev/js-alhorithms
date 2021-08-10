@@ -1,7 +1,7 @@
 import { Heap } from './Heap';
 
 // MinHeap is a concrete implementation of abstract Priority Queue
-class MaxHeap<T> extends Heap<T> {
+export class MaxHeap<T> extends Heap<T> {
   extractMax(): T | undefined {
     if (this.debug) {
       console.log(`\nHeap.extractMax:`);
