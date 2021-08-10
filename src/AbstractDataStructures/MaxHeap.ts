@@ -20,7 +20,7 @@ class MaxHeap<T> extends Heap<T> {
     const leftChildPosition = this.get_left_child_position(p);
     const rightChildPosition = this.get_right_child_position(p);
     const minChildPosition =
-      this.bin_tree_arr[leftChildPosition] > this.bin_tree_arr[rightChildPosition]
+      this.bin_tree_arr[leftChildPosition] < this.bin_tree_arr[rightChildPosition]
         ? rightChildPosition
         : leftChildPosition;
     if (item < this.bin_tree_arr[minChildPosition]) {
