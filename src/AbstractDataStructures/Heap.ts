@@ -6,9 +6,7 @@ export abstract class BinaryTreeDebugable extends BinaryTree<number> {
     let l = 0;
     const total_levels = Math.floor(Math.log2(this.bin_tree_arr.length));
     console.log(
-      `\n...total levels ${total_levels}, inner array(${this.bin_tree_arr.length}): ${JSON.stringify(
-        this.bin_tree_arr
-      )}`
+      `...total levels ${total_levels}, inner array(${this.bin_tree_arr.length}): ${JSON.stringify(this.bin_tree_arr)}`
     );
     const sorted = Array.from(this.bin_tree_arr).sort((a, b) => a - b);
     const maxElement = sorted[sorted.length - 1];
@@ -98,26 +96,32 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
     return position;
   }
   insert(el: T) {
-    if (this.debug) console.log(`\nHeap.insert ${el}:`);
-    if (this.debug) this.log();
     const end_position = this.bin_tree_arr.length;
     const key = this.getKey(el);
     this.bin_tree_arr[end_position] = key;
     this.hash.set(key, el);
+    if (this.debug) {
+      console.log(`\nHeap.insert ${el} to the end:`);
+      this.log();
+      console.log(`...restoring balance:`);
+    }
     this.bubble_up(end_position);
-    if (this.debug) this.log();
+    if (this.debug) {
+      console.log(`\n...after:`);
+      this.log();
+    }
   }
   extract(): T | undefined {
-    if (this.debug) console.log(`\nHeap.extractMin`);
-    if (this.debug) this.log();
     const lastKey = this.bin_tree_arr.pop();
     if (!lastKey) return;
     const firstKey = this.bin_tree_arr[0];
     this.bin_tree_arr[0] = lastKey;
     const el = this.hash.get(firstKey);
-    if (this.debug) console.log(`\n...extracted ${el}, replaced with ${lastKey}`);
+    if (this.debug) {
+      console.log(`\n...extracted ${el}, restoring balance: `);
+      console.log(`......${el} replaced with ${lastKey}`);
+    }
     this.bubble_down(0);
-    if (this.debug) this.log();
     return el;
   }
 

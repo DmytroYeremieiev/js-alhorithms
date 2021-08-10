@@ -1,10 +1,10 @@
 import { Heap } from './Heap';
 
 // MinHeap is a concrete implementation of abstract Priority Queue
-class MinHeap<T> extends Heap<T> {
-  extractMin(): T | undefined {
+class MaxHeap<T> extends Heap<T> {
+  extractMax(): T | undefined {
     if (this.debug) {
-      console.log(`\nHeap.extractMin:`);
+      console.log(`\nHeap.extractMax:`);
       console.log(`...before:`);
       this.log();
     }
@@ -23,7 +23,7 @@ class MinHeap<T> extends Heap<T> {
       this.bin_tree_arr[leftChildPosition] > this.bin_tree_arr[rightChildPosition]
         ? rightChildPosition
         : leftChildPosition;
-    if (item > this.bin_tree_arr[minChildPosition]) {
+    if (item < this.bin_tree_arr[minChildPosition]) {
       if (this.debug) console.log(`......bubble_down, swap ${item} with ${this.bin_tree_arr[minChildPosition]}`);
       this.swap(p, minChildPosition);
       this.bubble_down(minChildPosition);
@@ -34,7 +34,7 @@ class MinHeap<T> extends Heap<T> {
     if (parentPosition === -1) {
       return; /* at root of heap, no parent */
     }
-    if (this.bin_tree_arr[parentPosition] > this.bin_tree_arr[p]) {
+    if (this.bin_tree_arr[parentPosition] < this.bin_tree_arr[p]) {
       if (this.debug)
         console.log(`......bubble_up, swap ${this.bin_tree_arr[p]} with ${this.bin_tree_arr[parentPosition]}`);
       this.swap(p, parentPosition);
@@ -43,13 +43,13 @@ class MinHeap<T> extends Heap<T> {
   }
 }
 
-const heap = new MinHeap([4, 2, 8, 9, 4, 12, 9, 11, 13], el => el, true);
+const heap = new MaxHeap([4, 2, 8, 9, 4, 12, 9, 11, 13], el => el, true);
 heap.insert(11);
 heap.insert(1);
 heap.insert(10);
 heap.insert(16);
 heap.insert(14);
 heap.insert(3);
-heap.extractMin();
-heap.extractMin();
-heap.extractMin();
+heap.extractMax();
+heap.extractMax();
+heap.extractMax();
