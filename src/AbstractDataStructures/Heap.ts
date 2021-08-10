@@ -1,24 +1,7 @@
-export abstract class Heap<T> {
-  bin_tree_arr: number[] = [];
-  hash: Map<number, T> = new Map();
-  getKey: (el: T) => number;
-  constructor(array?: T[], getKey?: (el: T) => number) {
-    this.getKey = getKey || (el => +el);
-  }
-  abstract get_parent_position(n: number): number;
-  abstract get_left_child_position(n: number): number;
-  abstract get_right_child_position(n: number): number;
-  abstract insert(el: T, log: boolean): void;
-  abstract extract(log: boolean): T | undefined;
-  abstract swap(position1: number, position2: number): void;
-  abstract bubble_down(p: number, log: boolean): void;
-  abstract bubble_up(p: number, log: boolean): void;
+export abstract class BinaryTree<T> {
+  bin_tree_arr: T[] = [];
 }
-
-export abstract class HeapPrintable<T> extends Heap<T> {
-  constructor(array?: T[], getKey?: (el: T) => number) {
-    super(array, getKey);
-  }
+export abstract class BinaryTreeDebugable extends BinaryTree<number> {
   log() {
     let l = 0;
     const total_levels = Math.floor(Math.log2(this.bin_tree_arr.length));
@@ -86,4 +69,63 @@ export abstract class HeapPrintable<T> extends Heap<T> {
     }
     return res;
   }
+}
+export abstract class Heap<T> extends BinaryTreeDebugable {
+  hash: Map<number, T> = new Map();
+  getKey: (el: T) => number;
+  debug: boolean;
+  constructor(array: T[] = [], getKey?: (el: T) => number, debug = false) {
+    super();
+    this.debug = debug;
+    this.getKey = getKey || (el => +el);
+    for (let i = 0; i < array.length; i++) {
+      const el = array[i];
+      this.insert(el);
+    }
+  }
+  get_parent_position(n: number): number {
+    if (n === 0) return -1;
+    return Math.floor((n - 1) / 2);
+  }
+  get_left_child_position(n: number): number {
+    const position = 2 * n + 1;
+    if (position > this.bin_tree_arr.length) return -1;
+    return position;
+  }
+  get_right_child_position(n: number): number {
+    const position = 2 * n + 1 + 1;
+    if (position > this.bin_tree_arr.length) return -1;
+    return position;
+  }
+  insert(el: T) {
+    if (this.debug) console.log(`\nHeap.insert ${el}:`);
+    if (this.debug) this.log();
+    const end_position = this.bin_tree_arr.length;
+    const key = this.getKey(el);
+    this.bin_tree_arr[end_position] = key;
+    this.hash.set(key, el);
+    this.bubble_up(end_position);
+    if (this.debug) this.log();
+  }
+  extract(): T | undefined {
+    if (this.debug) console.log(`\nHeap.extractMin`);
+    if (this.debug) this.log();
+    const lastKey = this.bin_tree_arr.pop();
+    if (!lastKey) return;
+    const firstKey = this.bin_tree_arr[0];
+    this.bin_tree_arr[0] = lastKey;
+    const el = this.hash.get(firstKey);
+    if (this.debug) console.log(`\n...extracted ${el}, replaced with ${lastKey}`);
+    this.bubble_down(0);
+    if (this.debug) this.log();
+    return el;
+  }
+
+  swap(position1: number, position2: number) {
+    const temp = this.bin_tree_arr[position1];
+    this.bin_tree_arr[position1] = this.bin_tree_arr[position2];
+    this.bin_tree_arr[position2] = temp;
+  }
+  abstract bubble_down(p: number): void;
+  abstract bubble_up(p: number): void;
 }
