@@ -49,39 +49,47 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
     if (!v.out_edges) v.out_edges = [];
     return v;
   });
-  start.length = 0;
-  // const edgesMap = getEdgeMap(graph);
+  const edgesMap = getEdgeMap(graph);
+  start.length = 0; // crucial step, this will make sure very first extractMin will fetch start vertex
 
-  const X = new Map([[start.id, start]]);
-  const V_X = new Map(Object.entries(verticesMap));
-  V_X.delete(start.id);
+  const X = new Map();
+  // gather all vertices, including start vertex
+  const V_X = graph.vertices.reduce((heap, vertex) => {
+    heap.insert(vertex);
+    return heap;
+  }, new MinHeap<DirectedVertex>(undefined, v => v.length!, true));
+
   console.log('Initialize X, V_X, while V_X.size > 0');
-  while (V_X.size > 0) {
-    let minEdge = null;
-    console.log(`...X: ${JSON.stringify(Array.from(X.keys()))}, V_X.size: ${JSON.stringify(Array.from(V_X.keys()))}`);
-    console.log(`...Find an edge from X to V_T set with minimizing Dijkstra score: (source.length + edge.length)`);
-    for (let i = 0; i < graph.edges.length; i++) {
-      const edge = graph.edges[i];
-      if (!X.has(edge.source) || !V_X.has(edge.target)) {
-        console.log(`......skip an edge: '${edge.id}' not connecting X and V_X`);
-        continue;
-      }
-      const source: DirectedVertex = verticesMap[edge.source];
-      edge.score = source.length! + edge.length!;
-      if (!minEdge || edge.score < minEdge?.score!) {
-        minEdge = edge;
-        console.log(`......an edge: '${edge.id}' with Dijkstra score: ${edge.score}`);
-      } else {
-        console.log(`......skip an edge: '${edge.id}' with Dijkstra score: ${edge.score}`);
-      }
+  while (!V_X.isEmpty()) {
+    console.log(`...X: ${JSON.stringify(Array.from(X.keys()))}, V_X: ${JSON.stringify(V_X.bin_tree_arr)}`);
+    const w = V_X.extractMin()!; // vertex 'w' minimum Dijkstra score
+    console.log(
+      `...Extracted vertex 'w': ${w.id} with minimum Dijkstra score ${w.length}: 
+      min{(length(v1) + length(v1->w)),
+         (length(v2) + length(v2->w)), 
+         (length(v3) + length(v3->w), ...)
+      }`
+    );
+
+    X.set(w.id, w);
+    // Invariant:
+    //The key of a vertex w ∈ V_X is the minimum Dijkstra
+    //is the minimum Dijkstra score of an edge with tail v ∈ X and
+    // , or Infinity such edge exists.
+    console.log(`...Maintaining invariant: `);
+
+    for (let i = 0; i < w.out_edges!.length; i++) {
+      const edge = edgesMap[w.out_edges![i]];
+      const y: DirectedVertex = verticesMap[edge.target]; // vertex on right side of frontier
+      const position = V_X.bin_tree_arr.indexOf(y.length!);
+      V_X.delete(position);
+      console.log(`......Deleted y: '${y.length!}' from V_X: ${JSON.stringify(V_X.bin_tree_arr)}`);
+
+      y.length = Math.min(y.length!, w.length! + edge.length!);
+      console.log(`......recalculate y's dijkstra score: Min(${y.length!}, ${w.length! + edge.length!})`);
+      V_X.insert(y);
+      console.log(`......Inserted y '${y.length!}' to V_X: ${JSON.stringify(V_X.bin_tree_arr)}`);
     }
-    const source = verticesMap[minEdge?.source!];
-    const target = verticesMap[minEdge?.target!];
-    target.length = source.length! + minEdge?.length!;
-    console.log(`...pick the edge: '${minEdge?.id}' with minimizing Dijkstra score: ${target.length}`);
-    console.log(`...move '${target.id}' vertex from 'V_X' to 'X' set\n`);
-    V_X.delete(target.id);
-    X.set(target.id, target);
   }
 
   return graph.vertices;
