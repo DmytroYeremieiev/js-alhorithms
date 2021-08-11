@@ -48,7 +48,7 @@ const heap = new MaxHeap(
   {
     array: [4, 2, 8, 9, 4, 12, 9, 11, 13],
     getKey: el => el,
-    printEL: el => `${el.id}:${el.length === Infinity ? '∞' : el.length}`,
+    printEL: el => el + '',
   },
   false
 );

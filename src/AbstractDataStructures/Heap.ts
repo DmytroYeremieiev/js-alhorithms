@@ -135,12 +135,12 @@ export abstract class Heap<T> extends BinaryTreeDebugable<T> {
   }
   get_left_child_position(n: number): number {
     const position = 2 * n + 1;
-    if (position > this.bin_tree_arr.length) return -1;
+    if (position > this.bin_tree_arr.length - 1) return -1;
     return position;
   }
   get_right_child_position(n: number): number {
     const position = 2 * n + 1 + 1;
-    if (position > this.bin_tree_arr.length) return -1;
+    if (position > this.bin_tree_arr.length - 1) return -1;
     return position;
   }
   insert(el: T) {
