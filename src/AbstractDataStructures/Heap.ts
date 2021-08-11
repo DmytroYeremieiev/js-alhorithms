@@ -149,8 +149,13 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
     }
   }
   extract(): T | undefined {
-    const lastKey = this.bin_tree_arr.pop();
-    if (!lastKey) return;
+    if (this.bin_tree_arr.length === 0) return;
+    if (this.bin_tree_arr.length === 1) {
+      const el = this.hash.get(this.bin_tree_arr[0]);
+      this.bin_tree_arr.pop();
+      return el;
+    }
+    const lastKey = this.bin_tree_arr.pop()!;
     const firstKey = this.bin_tree_arr[0];
     this.bin_tree_arr[0] = lastKey;
     const el = this.hash.get(firstKey);

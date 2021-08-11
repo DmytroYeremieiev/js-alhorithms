@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { Heap } from './Heap';
 
 // MinHeap is a concrete implementation of abstract Priority Queue
@@ -53,3 +54,7 @@ heap.insert(3);
 heap.extractMax();
 heap.extractMax();
 heap.extractMax();
+heap.delete(0);
+heap.delete(heap.size() - 1);
+heap.delete(Math.floor(heap.size() / 2));
+heap.delete(1);
