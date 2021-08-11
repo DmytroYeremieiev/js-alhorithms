@@ -85,7 +85,7 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
     return this.bin_tree_arr.length;
   }
   isEmpty(): boolean {
-    return Boolean(this.bin_tree_arr.length);
+    return this.bin_tree_arr.length === 0;
   }
   delete(position: number): void {
     const deleteKey = this.bin_tree_arr[position];
@@ -138,7 +138,7 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
     this.bin_tree_arr[end_position] = key;
     this.hash.set(key, el);
     if (this.debug) {
-      console.log(`\nHeap.insert ${el} to the end:`);
+      console.log(`\nHeap.insert ${JSON.stringify(el)}, key: ${key} to the end:`);
       this.log();
       console.log(`...restoring balance:`);
     }
@@ -160,8 +160,8 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
     this.bin_tree_arr[0] = lastKey;
     const el = this.hash.get(firstKey);
     if (this.debug) {
-      console.log(`\n...extracted ${el}, restoring balance: `);
-      console.log(`......${el} replaced with ${lastKey}`);
+      console.log(`\n...extracted ${JSON.stringify(el)}, restoring balance: `);
+      console.log(`......${firstKey} replaced with ${lastKey}`);
     }
     this.bubble_down(0);
     return el;
