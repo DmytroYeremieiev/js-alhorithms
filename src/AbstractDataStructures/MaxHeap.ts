@@ -18,14 +18,19 @@ export class MaxHeap<T> extends Heap<T> {
   }
   bubble_down(p: number) {
     const item = this.bin_tree_arr[p];
+    if (!item) return;
+    const elemKey = this.getKey(item);
     const leftChildPosition = this.get_left_child_position(p);
     const rightChildPosition = this.get_right_child_position(p);
-    const minChildPosition =
-      this.bin_tree_arr[leftChildPosition] < this.bin_tree_arr[rightChildPosition]
-        ? rightChildPosition
-        : leftChildPosition;
-    if (item < this.bin_tree_arr[minChildPosition]) {
-      if (this.debug) console.log(`......bubble_down, swap ${item} with ${this.bin_tree_arr[minChildPosition]}`);
+    const leftKey = leftChildPosition >= 0 ? this.getKey(this.bin_tree_arr[leftChildPosition]) : -Infinity;
+    const rightKey = rightChildPosition >= 0 ? this.getKey(this.bin_tree_arr[rightChildPosition]) : -Infinity;
+    const minChildPosition = leftKey < rightKey ? rightChildPosition : leftChildPosition;
+    const minChildKey = minChildPosition >= 0 ? this.getKey(this.bin_tree_arr[minChildPosition]) : -Infinity;
+    if (elemKey < minChildKey) {
+      if (this.debug)
+        console.log(
+          `......bubble_down, swap ${this.printEL(item)} with ${this.printEL(this.bin_tree_arr[minChildPosition])}`
+        );
       this.swap(p, minChildPosition);
       this.bubble_down(minChildPosition);
     }

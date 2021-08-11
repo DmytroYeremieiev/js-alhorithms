@@ -21,11 +21,10 @@ export class MinHeap<T> extends Heap<T> {
     const elemKey = this.getKey(item);
     const leftChildPosition = this.get_left_child_position(p);
     const rightChildPosition = this.get_right_child_position(p);
-    const minChildPosition =
-      this.getKey(this.bin_tree_arr[leftChildPosition]) > this.getKey(this.bin_tree_arr[rightChildPosition])
-        ? rightChildPosition
-        : leftChildPosition;
-    const minChildKey = this.getKey(this.bin_tree_arr[minChildPosition]);
+    const leftKey = leftChildPosition >= 0 ? this.getKey(this.bin_tree_arr[leftChildPosition]) : Infinity;
+    const rightKey = rightChildPosition >= 0 ? this.getKey(this.bin_tree_arr[rightChildPosition]) : Infinity;
+    const minChildPosition = leftKey > rightKey ? rightChildPosition : leftChildPosition;
+    const minChildKey = minChildPosition >= 0 ? this.getKey(this.bin_tree_arr[minChildPosition]) : Infinity;
     if (elemKey > minChildKey) {
       if (this.debug)
         console.log(
