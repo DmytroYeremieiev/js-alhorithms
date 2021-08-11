@@ -54,10 +54,11 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
 
   const X = new Map();
   // gather all vertices, including start vertex
+  const printEL = (el: DirectedVertex) => `${el.id}:${el.length === Infinity ? '∞' : el.length}`;
   const V_X = graph.vertices.reduce((heap, vertex) => {
     heap.insert(vertex);
     return heap;
-  }, new MinHeap<DirectedVertex>(undefined, v => v.length!, false));
+  }, new MinHeap<DirectedVertex>({ getKey: v => v.length!, printEL }, false));
 
   console.log('\nInitialize X, V_X, while V_X.size > 0');
   while (!V_X.isEmpty()) {
@@ -79,11 +80,11 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
     for (let i = 0; i < w.out_edges!.length; i++) {
       const edge = edgesMap[w.out_edges![i]];
       const y: DirectedVertex = verticesMap[edge.target]; // vertex on right side of frontier
-      const position = V_X.bin_tree_arr.indexOf(y.length!);
+      const position = V_X.bin_tree_arr.indexOf(y);
       V_X.delete(position);
       console.log(
         `......Deleted ${y.id} vertex with '${y.length!}' key from V_X: ${JSON.stringify(
-          V_X.bin_tree_arr.map(e => e.toString())
+          V_X.bin_tree_arr.map(printEL)
         )}`
       );
 
@@ -96,7 +97,7 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
       V_X.insert(y);
       console.log(
         `......Inserted ${y.id} vertex with new dijkstra score-key '${y.length!}' to V_X: ${JSON.stringify(
-          V_X.bin_tree_arr.map(e => e.toString())
+          V_X.bin_tree_arr.map(printEL)
         )}`
       );
     }

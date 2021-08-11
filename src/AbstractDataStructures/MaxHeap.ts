@@ -44,7 +44,14 @@ export class MaxHeap<T> extends Heap<T> {
   }
 }
 
-const heap = new MaxHeap({ array: [4, 2, 8, 9, 4, 12, 9, 11, 13], getKey: el => el }, true);
+const heap = new MaxHeap(
+  {
+    array: [4, 2, 8, 9, 4, 12, 9, 11, 13],
+    getKey: el => el,
+    printEL: el => `${el.id}:${el.length === Infinity ? '∞' : el.length}`,
+  },
+  false
+);
 heap.insert(11);
 heap.insert(1);
 heap.insert(10);
