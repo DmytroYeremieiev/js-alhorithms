@@ -24,8 +24,8 @@ const V: DirectedVertex = {
 };
 const W: DirectedVertex = {
   id: 'W',
-  in_edges: ['WT'],
-  out_edges: ['SW'],
+  in_edges: ['SW'],
+  out_edges: ['WT'],
 };
 const T: DirectedVertex = {
   id: 'T',
@@ -57,18 +57,16 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
   const V_X = graph.vertices.reduce((heap, vertex) => {
     heap.insert(vertex);
     return heap;
-  }, new MinHeap<DirectedVertex>(undefined, v => v.length!, true));
+  }, new MinHeap<DirectedVertex>(undefined, v => v.length!, false));
 
-  console.log('Initialize X, V_X, while V_X.size > 0');
+  console.log('\nInitialize X, V_X, while V_X.size > 0');
   while (!V_X.isEmpty()) {
-    console.log(`...X: ${JSON.stringify(Array.from(X.keys()))}, V_X: ${JSON.stringify(V_X.bin_tree_arr)}`);
+    console.log(
+      `...X: ${JSON.stringify(Array.from(X.keys()))}, V_X: ${JSON.stringify(V_X.bin_tree_arr.map(e => e.toString()))}`
+    );
     const w = V_X.extractMin()!; // vertex 'w' minimum Dijkstra score
     console.log(
-      `...Extracted vertex 'w': ${w.id} with minimum Dijkstra score ${w.length}: 
-      min{(length(v1) + length(v1->w)),
-         (length(v2) + length(v2->w)), 
-         (length(v3) + length(v3->w), ...)
-      }`
+      `\n...Second round tournament, extracted w vertex: '${w.id}' with minimum Dijkstra score ${w.length} - min{(length(v1) + length(v1->w)), (length(v2) + length(v2->w)), ...)}`
     );
 
     X.set(w.id, w);
@@ -76,19 +74,31 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
     //The key of a vertex w ∈ V_X is the minimum Dijkstra
     //is the minimum Dijkstra score of an edge with tail v ∈ X and
     // , or Infinity such edge exists.
-    console.log(`...Maintaining invariant: `);
+    console.log(`\n...Maintaining invariant, for affected vertices: ${JSON.stringify(w.out_edges)}`);
 
     for (let i = 0; i < w.out_edges!.length; i++) {
       const edge = edgesMap[w.out_edges![i]];
       const y: DirectedVertex = verticesMap[edge.target]; // vertex on right side of frontier
       const position = V_X.bin_tree_arr.indexOf(y.length!);
       V_X.delete(position);
-      console.log(`......Deleted y: '${y.length!}' from V_X: ${JSON.stringify(V_X.bin_tree_arr)}`);
+      console.log(
+        `......Deleted ${y.id} vertex with '${y.length!}' key from V_X: ${JSON.stringify(
+          V_X.bin_tree_arr.map(e => e.toString())
+        )}`
+      );
+
+      console.log(
+        `......First round tournament, recalculate ${y.id} vertex dijkstra score: Min(${y.length!}, ${w.length! +
+          edge.length!})`
+      );
 
       y.length = Math.min(y.length!, w.length! + edge.length!);
-      console.log(`......recalculate y's dijkstra score: Min(${y.length!}, ${w.length! + edge.length!})`);
       V_X.insert(y);
-      console.log(`......Inserted y '${y.length!}' to V_X: ${JSON.stringify(V_X.bin_tree_arr)}`);
+      console.log(
+        `......Inserted ${y.id} vertex with new dijkstra score-key '${y.length!}' to V_X: ${JSON.stringify(
+          V_X.bin_tree_arr.map(e => e.toString())
+        )}`
+      );
     }
   }
 
