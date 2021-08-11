@@ -18,14 +18,19 @@ export class MinHeap<T> extends Heap<T> {
   bubble_down(p: number) {
     const item = this.bin_tree_arr[p];
     if (!item) return;
+    const elemKey = this.getKey(item);
     const leftChildPosition = this.get_left_child_position(p);
     const rightChildPosition = this.get_right_child_position(p);
     const minChildPosition =
-      this.bin_tree_arr[leftChildPosition] > this.bin_tree_arr[rightChildPosition]
+      this.getKey(this.bin_tree_arr[leftChildPosition]) > this.getKey(this.bin_tree_arr[rightChildPosition])
         ? rightChildPosition
         : leftChildPosition;
-    if (item > this.bin_tree_arr[minChildPosition]) {
-      if (this.debug) console.log(`......bubble_down, swap ${item} with ${this.bin_tree_arr[minChildPosition]}`);
+    const minChildKey = this.getKey(this.bin_tree_arr[minChildPosition]);
+    if (elemKey > minChildKey) {
+      if (this.debug)
+        console.log(
+          `......bubble_down, swap ${this.printEL(item)} with ${this.printEL(this.bin_tree_arr[minChildPosition])}`
+        );
       this.swap(p, minChildPosition);
       this.bubble_down(minChildPosition);
     }
@@ -35,9 +40,15 @@ export class MinHeap<T> extends Heap<T> {
     if (parentPosition === -1) {
       return; /* at root of heap, no parent */
     }
-    if (this.bin_tree_arr[parentPosition] > this.bin_tree_arr[p]) {
+    const parentKey = this.getKey(this.bin_tree_arr[parentPosition]);
+    const elemKey = this.getKey(this.bin_tree_arr[p]);
+    if (parentKey > elemKey) {
       if (this.debug)
-        console.log(`......bubble_up, swap ${this.bin_tree_arr[p]} with ${this.bin_tree_arr[parentPosition]}`);
+        console.log(
+          `......bubble_up, swap ${this.printEL(this.bin_tree_arr[p])} with ${this.printEL(
+            this.bin_tree_arr[parentPosition]
+          )}`
+        );
       this.swap(p, parentPosition);
       this.bubble_up(parentPosition);
     }
@@ -45,21 +56,24 @@ export class MinHeap<T> extends Heap<T> {
 }
 
 const heap = new MinHeap(
-  [
-    {
-      id: 'A',
-      length: 3,
-    },
-    {
-      id: 'B',
-      length: Infinity,
-    },
-    {
-      id: 'C',
-      length: 1,
-    },
-  ],
-  el => el.length,
+  {
+    array: [
+      {
+        id: 'A',
+        length: 3,
+      },
+      {
+        id: 'B',
+        length: Infinity,
+      },
+      {
+        id: 'C',
+        length: 1,
+      },
+    ],
+    getKey: el => el.length,
+    getName: el => el.id,
+  },
   true
 );
 // heap.extractMin();

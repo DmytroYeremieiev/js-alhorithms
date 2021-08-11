@@ -1,18 +1,35 @@
-export abstract class BinaryTree {
-  bin_tree_arr: number[] = [];
+type InitParams<T> = {
+  array: T[];
+  getKey: (el: T) => number;
+  getName: (el: T) => string | number;
+  debug: boolean;
+};
+
+export abstract class BinaryTree<T> {
+  bin_tree_arr: T[] = [];
+  getKey: InitParams<T>['getKey'];
+  getName: InitParams<T>['getName'];
+  debug: boolean;
+  printEL: (el: T) => string;
+  constructor({ getKey = el => +el, getName = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
+    this.debug = debug;
+    this.getKey = getKey;
+    this.getName = getName;
+    this.printEL = el => `${this.getName(el)}:${this.getKey(el)}`;
+  }
 }
-export abstract class BinaryTreeDebugable extends BinaryTree {
+export abstract class BinaryTreeDebugable<T> extends BinaryTree<T> {
   log() {
     let l = 0;
     const total_levels = Math.floor(Math.log2(this.bin_tree_arr.length));
     console.log(
       `...total levels ${total_levels}, inner array(${this.bin_tree_arr.length}): ${JSON.stringify(
-        this.bin_tree_arr.map(e => e.toString())
+        this.bin_tree_arr.map(this.printEL)
       )}`
     );
-    const sorted = Array.from(this.bin_tree_arr).sort((a, b) => a - b);
-    const maxElement = sorted[sorted.length - 1];
-    const maxKeyLength = (Math.log(maxElement) * Math.LOG10E + 1) | 0;
+    const sorted = Array.from(this.bin_tree_arr).sort((a, b) => this.getKey(a) - this.getKey(b));
+    const maxElement = this.printEL(sorted[sorted.length - 1]);
+    const maxKeyLength = maxElement.length;
     while (l <= total_levels) {
       this.printLevel(l, total_levels, maxKeyLength);
       l++;
@@ -20,7 +37,7 @@ export abstract class BinaryTreeDebugable extends BinaryTree {
   }
   printLevel(level: number, total_levels: number, maxKeyLength: number) {
     if (total_levels === 0) {
-      console.log(`––– ${this.bin_tree_arr[0]} –––`);
+      console.log(`––– ${this.printEL(this.bin_tree_arr[0])} –––`);
       return;
     }
     const level_size = Math.pow(2, level);
@@ -48,18 +65,18 @@ export abstract class BinaryTreeDebugable extends BinaryTree {
     const fillerArray = Array.from(Array(level_size - keys.length));
     const _keys = [...keys, ...fillerArray];
     for (let i = 0; i < _keys.length; i++) {
-      const element = _keys[i];
+      const element = _keys[i] ? this.printEL(_keys[i]) : '';
+
       const between = this.fillSpace(i === _keys.length - 1 ? 0 : distance, maxKeyLength + 2);
-      const node = this.wrapKeyInSpace(element ?? '', maxKeyLength, element ? '0' : '–');
+      const node = this.wrapKeyInSpace(element, maxKeyLength, element ? '0' : '–');
       const nodeStr = element ? ` ${node} ` : `–${node}–`;
       out_str += `${nodeStr}${between}`;
     }
     out_str += `${this.fillSpace(offset, maxKeyLength + 2)}`;
     console.log(out_str);
   }
-  wrapKeyInSpace(key: number, maxKeyLength: number, filler = '0') {
-    const keyLength = (Math.log(key) * Math.LOG10E + 1) | 0;
-    const offset = maxKeyLength - keyLength;
+  wrapKeyInSpace(key: string, maxKeyLength: number, filler = '0') {
+    const offset = maxKeyLength - key.length;
     return `${this.fillSpace(offset, 1, filler)}${key}`;
   }
   fillSpace(count: number, multiplier: number, filler = '–'): string {
@@ -70,23 +87,10 @@ export abstract class BinaryTreeDebugable extends BinaryTree {
     return res;
   }
 }
-type InitParams<T> = {
-  array: T[];
-  getKey: (el: T) => number;
-  getName: (el: T) => string | number;
-  debug: boolean;
-};
 
-export abstract class Heap<T> extends BinaryTreeDebugable {
-  hash: Map<number, T> = new Map();
-  getKey: InitParams<T>['getKey'];
-  getName: InitParams<T>['getName'];
-  debug: boolean;
+export abstract class Heap<T> extends BinaryTreeDebugable<T> {
   constructor({ array = [], getKey = el => +el, getName = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
-    super();
-    this.debug = debug;
-    this.getKey = getKey;
-    this.getName = getName;
+    super({ array, getKey, getName }, debug);
     for (let i = 0; i < array.length; i++) {
       const el = array[i];
       this.insert(el);
@@ -99,26 +103,25 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
     return this.bin_tree_arr.length === 0;
   }
   delete(position: number): void {
-    const deleteKey = this.bin_tree_arr[position];
+    const deleteElem = this.bin_tree_arr[position];
     if (this.debug) {
-      console.log(`\nHeap.delete a ${deleteKey} key, on a ${position}-th position:`);
+      console.log(`\nHeap.delete a ${this.printEL(deleteElem)}, on a ${position}-th position:`);
       console.log(`...before:`);
       this.log();
     }
-    if (this.bin_tree_arr.length === 0 || !deleteKey) return;
+    if (this.bin_tree_arr.length === 0 || !deleteElem) return;
 
-    const lastKey = this.bin_tree_arr.pop();
-    if (lastKey === deleteKey) {
-      this.hash.delete(deleteKey);
+    const lastElem = this.bin_tree_arr.pop();
+    if (lastElem === deleteElem) {
       if (this.debug) {
         console.log(`\n...after:`);
         this.log();
       }
       return;
     }
-    this.bin_tree_arr[position] = lastKey!;
+    this.bin_tree_arr[position] = lastElem!;
     if (this.debug) {
-      console.log(`\n...${deleteKey} replacing with ${lastKey}:`);
+      console.log(`\n...${this.printEL(deleteElem)} replacing with ${this.printEL(lastElem!)}:`);
       this.log();
       console.log(`...restoring balance:`);
     }
@@ -127,7 +130,6 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
       console.log(`\n...rebalanced:`);
       this.log();
     }
-    this.hash.delete(position);
   }
   get_parent_position(n: number): number {
     if (n === 0) return -1;
@@ -145,10 +147,9 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
   }
   insert(el: T) {
     const end_position = this.bin_tree_arr.length;
-    const key = this.getKey(el);
-    this.bin_tree_arr[end_position] = key;
+    this.bin_tree_arr[end_position] = el;
     if (this.debug) {
-      console.log(`\nHeap.insert ${this.getName(el)}, key: ${key} to the end:`);
+      console.log(`\nHeap.insert ${this.printEL(el)} to the end:`);
       this.log();
       console.log(`...restoring balance:`);
     }
@@ -161,20 +162,19 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
   extract(): T | undefined {
     if (this.bin_tree_arr.length === 0) return;
     if (this.bin_tree_arr.length === 1) {
-      const el = this.hash.get(this.bin_tree_arr[0]);
+      const el = this.bin_tree_arr[0];
       this.bin_tree_arr.pop();
       return el;
     }
-    const lastKey = this.bin_tree_arr.pop()!;
-    const firstKey = this.bin_tree_arr[0];
-    this.bin_tree_arr[0] = lastKey;
-    const el = this.hash.get(firstKey);
+    const lastElem = this.bin_tree_arr.pop()!;
+    const firstElem = this.bin_tree_arr[0];
+    this.bin_tree_arr[0] = lastElem;
     if (this.debug) {
-      console.log(`\n...extracted ${this.getName(el!)}, restoring balance: `);
-      console.log(`......${firstKey} replaced with ${lastKey}`);
+      console.log(`\n...extracted ${this.printEL(firstElem)}, restoring balance: `);
+      console.log(`......${this.printEL(firstElem)} replaced with ${this.printEL(lastElem)}`);
     }
     this.bubble_down(0);
-    return el;
+    return firstElem;
   }
 
   swap(position1: number, position2: number) {
