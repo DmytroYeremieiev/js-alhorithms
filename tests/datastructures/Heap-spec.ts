@@ -51,11 +51,17 @@ describe('Heap', () => {
     expect(heap.extractMin()).to.be.equal(1);
     expect(heap.bin_tree_arr).to.be.deep.equal([2, 4]);
 
-    expect(heap.extractMin()).to.be.equal(2);
-    expect(heap.bin_tree_arr).to.be.deep.equal([4]);
+    heap.insert(5);
+    expect(heap.bin_tree_arr).to.be.deep.equal([2, 4, 5]);
 
-    expect(heap.extractMin()).to.be.equal(4);
-    expect(heap.bin_tree_arr).to.be.deep.equal([]);
+    expect(heap.extractMin()).to.be.equal(2);
+    expect(heap.bin_tree_arr).to.be.deep.equal([4, 5]);
+
+    heap.insert(1);
+    expect(heap.bin_tree_arr).to.be.deep.equal([1, 5, 4]);
+
+    expect(heap.extractMin()).to.be.equal(1);
+    expect(heap.bin_tree_arr).to.be.deep.equal([4, 5]);
   });
   it('MaxHeap', () => {
     let heap = new MaxHeap({ array: [4, 2, 8, 9, 4, 12, 9, 11, 13], getKey: el => el }, true);
