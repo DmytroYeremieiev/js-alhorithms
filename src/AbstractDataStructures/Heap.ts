@@ -1,21 +1,19 @@
 type InitParams<T> = {
   array: T[];
   getKey: (el: T) => number;
-  getName: (el: T) => string | number;
+  printEL: (el: T) => string;
   debug: boolean;
 };
 
 export abstract class BinaryTree<T> {
   bin_tree_arr: T[] = [];
   getKey: InitParams<T>['getKey'];
-  getName: InitParams<T>['getName'];
+  printEL: InitParams<T>['printEL'];
   debug: boolean;
-  printEL: (el: T) => string;
-  constructor({ getKey = el => +el, getName = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
+  constructor({ getKey = el => +el, printEL = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
     this.debug = debug;
     this.getKey = getKey;
-    this.getName = getName;
-    this.printEL = el => `${this.getName(el)}:${this.getKey(el)}`;
+    this.printEL = printEL;
   }
 }
 export abstract class BinaryTreeDebugable<T> extends BinaryTree<T> {
@@ -89,8 +87,8 @@ export abstract class BinaryTreeDebugable<T> extends BinaryTree<T> {
 }
 
 export abstract class Heap<T> extends BinaryTreeDebugable<T> {
-  constructor({ array = [], getKey = el => +el, getName = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
-    super({ array, getKey, getName }, debug);
+  constructor({ array = [], getKey = el => +el, printEL = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
+    super({ array, getKey, printEL }, debug);
     for (let i = 0; i < array.length; i++) {
       const el = array[i];
       this.insert(el);

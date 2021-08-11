@@ -44,17 +44,17 @@ export class MaxHeap<T> extends Heap<T> {
   }
 }
 
-// const heap = new MaxHeap([4, 2, 8, 9, 4, 12, 9, 11, 13], el => el, true);
-// heap.insert(11);
-// heap.insert(1);
-// heap.insert(10);
-// heap.insert(16);
-// heap.insert(14);
-// heap.insert(3);
-// heap.extractMax();
-// heap.extractMax();
-// heap.extractMax();
-// heap.delete(0);
-// heap.delete(heap.size() - 1);
-// heap.delete(Math.floor(heap.size() / 2));
-// heap.delete(1);
+const heap = new MaxHeap({ array: [4, 2, 8, 9, 4, 12, 9, 11, 13], getKey: el => el }, true);
+heap.insert(11);
+heap.insert(1);
+heap.insert(10);
+heap.insert(16);
+heap.insert(14);
+heap.insert(3);
+heap.extractMax();
+heap.extractMax();
+heap.extractMax();
+heap.delete(0);
+heap.delete(heap.size() - 1);
+heap.delete(Math.floor(heap.size() / 2));
+heap.delete(1);

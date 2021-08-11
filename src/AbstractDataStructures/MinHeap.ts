@@ -55,38 +55,39 @@ export class MinHeap<T> extends Heap<T> {
   }
 }
 
-const heap = new MinHeap(
-  {
-    array: [
-      {
-        id: 'A',
-        length: 3,
-      },
-      {
-        id: 'B',
-        length: Infinity,
-      },
-      {
-        id: 'C',
-        length: 1,
-      },
-    ],
-    getKey: el => el.length,
-    getName: el => el.id,
-  },
-  true
-);
+// const heap = new MinHeap(
+//   {
+//     array: [
+//       {
+//         id: 'A',
+//         length: 3,
+//       },
+//       {
+//         id: 'B',
+//         length: Infinity,
+//       },
+//       {
+//         id: 'C',
+//         length: 1,
+//       },
+//     ],
+//     getKey: el => el.length,
+//     printEL: el => `${el.id}:${el.length === Infinity ? '∞' : el.length}`,
+//   },
+//   true
+// );
 // heap.extractMin();
-// heap.insert(11);
+// const heap1 = new MinHeap({ array: [4, 2, 8, 9, 4, 12, 9, 11, 13], getKey: el => el }, true);
+// heap1.insert(11);
 
-// heap.insert(1);
-// heap.insert(10);
-// heap.insert(16);
-// heap.insert(14);
-// heap.insert(3);
-// heap.extractMin();
-// heap.extractMin();
-// heap.extractMin();
-// heap.delete(0);
-// heap.delete(heap.size() - 1);
-// heap.delete(Math.floor(heap.size() / 2));
+// heap1.insert(1);
+// heap1.insert(10);
+// heap1.insert(16);
+// heap1.insert(14);
+// heap1.insert(3);
+// heap1.extractMin();
+// heap1.extractMin();
+// heap1.extractMin();
+// heap1.delete(0);
+// heap1.delete(heap1.size() - 1);
+// heap1.delete(Math.floor(heap1.size() / 2));
