@@ -1,7 +1,7 @@
-export abstract class BinaryTree<T> {
-  bin_tree_arr: T[] = [];
+export abstract class BinaryTree {
+  bin_tree_arr: number[] = [];
 }
-export abstract class BinaryTreeDebugable extends BinaryTree<number> {
+export abstract class BinaryTreeDebugable extends BinaryTree {
   log() {
     let l = 0;
     const total_levels = Math.floor(Math.log2(this.bin_tree_arr.length));
@@ -70,14 +70,23 @@ export abstract class BinaryTreeDebugable extends BinaryTree<number> {
     return res;
   }
 }
+type InitParams<T> = {
+  array: T[];
+  getKey: (el: T) => number;
+  getName: (el: T) => string | number;
+  debug: boolean;
+};
+
 export abstract class Heap<T> extends BinaryTreeDebugable {
   hash: Map<number, T> = new Map();
-  getKey: (el: T) => number;
+  getKey: InitParams<T>['getKey'];
+  getName: InitParams<T>['getName'];
   debug: boolean;
-  constructor(array: T[] = [], getKey?: (el: T) => number, debug = false) {
+  constructor({ array = [], getKey = el => +el, getName = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
     super();
     this.debug = debug;
-    this.getKey = getKey || (el => +el);
+    this.getKey = getKey;
+    this.getName = getName;
     for (let i = 0; i < array.length; i++) {
       const el = array[i];
       this.insert(el);
@@ -138,9 +147,8 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
     const end_position = this.bin_tree_arr.length;
     const key = this.getKey(el);
     this.bin_tree_arr[end_position] = key;
-    this.hash.set(key, el);
     if (this.debug) {
-      console.log(`\nHeap.insert ${JSON.stringify(el)}, key: ${key} to the end:`);
+      console.log(`\nHeap.insert ${this.getName(el)}, key: ${key} to the end:`);
       this.log();
       console.log(`...restoring balance:`);
     }
@@ -162,7 +170,7 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
     this.bin_tree_arr[0] = lastKey;
     const el = this.hash.get(firstKey);
     if (this.debug) {
-      console.log(`\n...extracted ${JSON.stringify(el)}, restoring balance: `);
+      console.log(`\n...extracted ${this.getName(el!)}, restoring balance: `);
       console.log(`......${firstKey} replaced with ${lastKey}`);
     }
     this.bubble_down(0);

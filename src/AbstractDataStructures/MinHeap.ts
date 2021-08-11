@@ -44,24 +44,24 @@ export class MinHeap<T> extends Heap<T> {
   }
 }
 
-// const heap = new MinHeap(
-//   [
-//     {
-//       id: 'A',
-//       length: 3,
-//     },
-//     {
-//       id: 'B',
-//       length: Infinity,
-//     },
-//     {
-//       id: 'C',
-//       length: 1,
-//     },
-//   ],
-//   el => el.length,
-//   true
-// );
+const heap = new MinHeap(
+  [
+    {
+      id: 'A',
+      length: 3,
+    },
+    {
+      id: 'B',
+      length: Infinity,
+    },
+    {
+      id: 'C',
+      length: 1,
+    },
+  ],
+  el => el.length,
+  true
+);
 // heap.extractMin();
 // heap.insert(11);
 
