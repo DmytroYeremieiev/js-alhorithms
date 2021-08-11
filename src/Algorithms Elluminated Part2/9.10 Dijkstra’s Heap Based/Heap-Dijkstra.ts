@@ -62,9 +62,7 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
 
   console.log('\nInitialize X, V_X, while V_X.size > 0');
   while (!V_X.isEmpty()) {
-    console.log(
-      `...X: ${JSON.stringify(Array.from(X.keys()))}, V_X: ${JSON.stringify(V_X.bin_tree_arr.map(e => e.toString()))}`
-    );
+    console.log(`...X: ${JSON.stringify(Array.from(X.keys()))}, V_X: ${JSON.stringify(V_X.bin_tree_arr.map(printEL))}`);
     const w = V_X.extractMin()!; // vertex 'w' minimum Dijkstra score
     console.log(
       `\n...Second round tournament, extracted w vertex: '${w.id}' with minimum Dijkstra score ${w.length} - min{(length(v1) + length(v1->w)), (length(v2) + length(v2->w)), ...)}`
@@ -82,11 +80,7 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
       const y: DirectedVertex = verticesMap[edge.target]; // vertex on right side of frontier
       const position = V_X.bin_tree_arr.indexOf(y);
       V_X.delete(position);
-      console.log(
-        `......Deleted ${y.id} vertex with '${y.length!}' key from V_X: ${JSON.stringify(
-          V_X.bin_tree_arr.map(printEL)
-        )}`
-      );
+      console.log(`......Deleted ${printEL(y)} vertex from V_X: ${JSON.stringify(V_X.bin_tree_arr.map(printEL))}`);
 
       console.log(
         `......First round tournament, recalculate ${y.id} vertex dijkstra score: Min(${y.length!}, ${w.length! +
@@ -96,7 +90,7 @@ export function HeapDijkstra(graph: DirectedGraph, start: DirectedVertex): Direc
       y.length = Math.min(y.length!, w.length! + edge.length!);
       V_X.insert(y);
       console.log(
-        `......Inserted ${y.id} vertex with new dijkstra score-key '${y.length!}' to V_X: ${JSON.stringify(
+        `......Inserted ${y.id} vertex with new dijkstra score '${y.length!}' to V_X: ${JSON.stringify(
           V_X.bin_tree_arr.map(printEL)
         )}`
       );
