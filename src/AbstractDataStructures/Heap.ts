@@ -6,7 +6,9 @@ export abstract class BinaryTreeDebugable extends BinaryTree<number> {
     let l = 0;
     const total_levels = Math.floor(Math.log2(this.bin_tree_arr.length));
     console.log(
-      `...total levels ${total_levels}, inner array(${this.bin_tree_arr.length}): ${JSON.stringify(this.bin_tree_arr)}`
+      `...total levels ${total_levels}, inner array(${this.bin_tree_arr.length}): ${JSON.stringify(
+        this.bin_tree_arr.map(e => e.toString())
+      )}`
     );
     const sorted = Array.from(this.bin_tree_arr).sort((a, b) => a - b);
     const maxElement = sorted[sorted.length - 1];
