@@ -100,7 +100,7 @@ export abstract class Heap<T> extends BinaryTreeDebugable {
 
     const lastKey = this.bin_tree_arr.pop();
     if (lastKey === deleteKey) {
-      this.hash.delete(position);
+      this.hash.delete(deleteKey);
       if (this.debug) {
         console.log(`\n...after:`);
         this.log();
