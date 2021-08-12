@@ -16,6 +16,9 @@ export class MaxHeap<T> extends Heap<T> {
     }
     return res;
   }
+  findMax(): T | undefined {
+    return this.bin_tree_arr[0];
+  }
   bubble_down(p: number) {
     const item = this.bin_tree_arr[p];
     if (!item) return;
