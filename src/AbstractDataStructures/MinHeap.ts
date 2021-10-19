@@ -79,17 +79,17 @@ export class MinHeap<T> extends Heap<T> {
 //   true
 // );
 // heap.extractMin();
-// const heap1 = new MinHeap({ array: [4, 2, 8, 9, 4, 12, 9, 11, 13], getKey: el => el }, true);
-// heap1.insert(11);
+const heap1 = new MinHeap({ array: [4, 2, 8, 9, 4, 12, 9, 11, 13], getKey: el => el }, true);
+heap1.insert(11);
 
-// heap1.insert(1);
-// heap1.insert(10);
-// heap1.insert(16);
-// heap1.insert(14);
-// heap1.insert(3);
-// heap1.extractMin();
-// heap1.extractMin();
-// heap1.extractMin();
-// heap1.delete(0);
-// heap1.delete(heap1.size() - 1);
-// heap1.delete(Math.floor(heap1.size() / 2));
+heap1.insert(1);
+heap1.insert(10);
+heap1.insert(16);
+heap1.insert(14);
+heap1.insert(3);
+heap1.extractMin();
+heap1.extractMin();
+heap1.extractMin();
+heap1.delete(0);
+heap1.delete(heap1.size() - 1);
+heap1.delete(Math.floor(heap1.size() / 2));

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { Heap } from './Heap';
 
 // MinHeap is a concrete implementation of abstract Priority Queue
@@ -58,7 +57,7 @@ const heap = new MaxHeap(
     getKey: el => el,
     printEL: el => el + '',
   },
-  false
+  true
 );
 heap.insert(11);
 heap.insert(1);

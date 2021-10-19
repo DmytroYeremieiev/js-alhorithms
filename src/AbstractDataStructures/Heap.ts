@@ -10,10 +10,13 @@ export abstract class BinaryTree<T> {
   getKey: InitParams<T>['getKey'];
   printEL: InitParams<T>['printEL'];
   debug: boolean;
-  constructor({ getKey = el => +el, printEL = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
+  constructor({ array = [], getKey = el => +el, printEL = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
     this.debug = debug;
     this.getKey = getKey;
     this.printEL = printEL;
+    for (let i = 0; i < array.length; i++) {
+      this.bin_tree_arr[i] = array[i];
+    }
   }
 }
 export abstract class BinaryTreeDebugable<T> extends BinaryTree<T> {
@@ -89,10 +92,14 @@ export abstract class BinaryTreeDebugable<T> extends BinaryTree<T> {
 export abstract class Heap<T> extends BinaryTreeDebugable<T> {
   constructor({ array = [], getKey = el => +el, printEL = el => `${el}` }: Partial<InitParams<T>>, debug = false) {
     super({ array, getKey, printEL }, debug);
-    for (let i = 0; i < array.length; i++) {
-      const el = array[i];
-      this.insert(el);
+    if (this.debug) {
+      console.log(`new Heap(): ${JSON.stringify(this.bin_tree_arr.map(this.printEL))}`);
+      this.log();
     }
+    for (let p = Math.floor(this.bin_tree_arr.length / 2); p >= 0; p--) {
+      this.bubble_down(p);
+    }
+    if (this.debug) this.log();
   }
   size(): number {
     return this.bin_tree_arr.length;
