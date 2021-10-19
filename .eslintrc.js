@@ -36,5 +36,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ["*.js", "build/*", "node_modules/", "/.next", "/public"],
+  ignorePatterns: [ "build/*", "node_modules/", "/.next", "/public"],
 };
