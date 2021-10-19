@@ -22,23 +22,21 @@
 // you can write to stdout for debugging purposes, e.g.
 // console.log('this is a debug message');
 
-
 // Log O(n) - score 100%
 function solution(A) {
   // write your code in JavaScript (Node.js 8.9.4)
   const map = new Map();
-  for(let i = 0; i < A.length; i++){
-      if(A[i] > 0){
-          map.set(A[i]);
-      }
+  for (let i = 0; i < A.length; i++) {
+    if (A[i] > 0) {
+      map.set(A[i]);
+    }
   }
   let res = 1;
-  while (map.has(res))
-  {
-      res++;
+  while (map.has(res)) {
+    res++;
   }
   return res;
 }
 
 const res = solution([1, 3, 6, 4, 1, 2, 7, 8]);
-console.log('res', res)
+console.log('res', res);
