@@ -12,11 +12,10 @@ function solution(N, A) {
         counters[i] = max_c_value;
       }
     } else {
-      const new_c_value = counters[c_index] + 1;
-      if (new_c_value > max_c_value) {
-        max_c_value = new_c_value;
+      counters[c_index] = counters[c_index] + 1;
+      if (counters[c_index] > max_c_value) {
+        max_c_value = counters[c_index];
       }
-      counters[c_index] = new_c_value;
     }
   }
   return counters;
