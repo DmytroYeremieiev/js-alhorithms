@@ -115,19 +115,17 @@ function solution(N, A) {
   for (let i = 0; i < A.length; i++) {
     const c_id = A[i] - 1;
     if (c_id === N) {
-      for (const [c_id, c_value] of c_map) {
-        c_map.set(c_id, c_value + 1);
+      const max_c_value = heap.findMax();
+      for (const [c_id] of c_map) {
+        c_map.set(c_id, max_c_value);
       }
-      console.log(`max counter ${c_id}`, c_map);
     } else {
-      const c_value = c_map.get(c_id);
-      c_map.set(c_id, c_value + 1);
-      console.log(`increase ${c_id}`, c_map);
+      const new_c_value = c_map.get(c_id) + 1;
+      heap.insert(new_c_value);
+      c_map.set(c_id, new_c_value);
     }
   }
-  const res = Array.from(c_map.values());
-  console.log(res);
-  return res;
+  return Array.from(c_map.values());
 }
 
-console.log(`asdasd`);
+solution(5, [3, 4, 4, 6, 1, 4, 4]); //output [3, 2, 2, 4, 2]
