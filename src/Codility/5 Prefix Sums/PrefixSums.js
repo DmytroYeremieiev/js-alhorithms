@@ -16,3 +16,4 @@ console.log(`r_sums: ${r_sums}`);
 console.log(`totalOfSlice [..,.., 3, 4]: ${count_total(r_sums, 2, 3)}`);
 console.log(`totalOfSlice [1, 2, 3, ..]: ${count_total(r_sums, 0, 2)}`);
 console.log(`totalOfSlice [1, 2, 3,  4]: ${count_total(r_sums, 0, 3)}`);
+console.log(`totalOfSlice [1, ..,..,..]: ${count_total(r_sums, 0, 0)}`);
