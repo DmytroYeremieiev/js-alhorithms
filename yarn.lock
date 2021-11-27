@@ -293,6 +293,11 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+ark-forms@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/ark-forms/-/ark-forms-2.0.3.tgz#9717bbd13ca38ccd2ac220a94a1b93e2137ae1f5"
+  integrity sha512-diUOa5wQ5YMNAupV6VcQwZkyX3Mr66bmncnz2gIWBbyNFbaX9B/6NRCuaOvISWFq6JSfnc1MuHfw6I9RqPuxpQ==
+
 assertion-error@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.1.0.tgz#e60b6b0e8f301bd97e5375215bda406c85118c0b"
