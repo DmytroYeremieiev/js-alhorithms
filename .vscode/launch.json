@@ -5,10 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
       "name": "Launch JS file",
       "program": "${file}",
       "request": "launch",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
       "type": "node"
     },
     {
@@ -17,17 +27,34 @@
       "name": "Launch current file w/ ts-node",
       "program": "${workspaceFolder}/node_modules/.bin/ts-node",
       "protocol": "inspector",
-      "args": ["-r", "tsconfig-paths/register", "${relativeFile}"],
+      "args": [
+        "-r",
+        "tsconfig-paths/register",
+        "${relativeFile}"
+      ],
       "internalConsoleOptions": "openOnSessionStart",
-      "skipFiles": ["<node_internals>/**/*.js", "${workspaceRoot}/node_modules/**/*.js"]
+      "skipFiles": [
+        "<node_internals>/**/*.js",
+        "${workspaceRoot}/node_modules/**/*.js"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch current file",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["-r", "tsconfig-paths/register", "${relativeFile}"],
-      "skipFiles": ["<node_internals>/**/*.js", "${workspaceRoot}/node_modules/**/*.js"]
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "args": [
+        "-r",
+        "tsconfig-paths/register",
+        "${relativeFile}"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js",
+        "${workspaceRoot}/node_modules/**/*.js"
+      ]
     },
     {
       "type": "node",
@@ -68,7 +95,10 @@
         "${file}"
       ],
       "internalConsoleOptions": "openOnSessionStart",
-      "skipFiles": ["<node_internals>/**/*.js", "${workspaceRoot}/node_modules/**/*.js"]
+      "skipFiles": [
+        "<node_internals>/**/*.js",
+        "${workspaceRoot}/node_modules/**/*.js"
+      ]
     }
   ]
 }
