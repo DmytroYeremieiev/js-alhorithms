@@ -1,5 +1,9 @@
 ### Set Matrix Zero
 
+[Source](https://takeuforward.org/data-structure/set-matrix-zero/)
+[Leecode](https://leetcode.com/problems/set-matrix-zeroes/)
+[codingninjas](https://www.codingninjas.com/codestudio/problems/set-matrix-zeros_3846774?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website)
+
 Problem Statement: Given a matrix if an element in the matrix is 0 then you will have to set its entire column and row to 0 and then return the matrix.
 
 ```javascript
