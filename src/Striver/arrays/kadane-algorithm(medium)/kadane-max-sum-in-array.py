@@ -6,22 +6,25 @@ def maxSubArray(arr: List[int]) -> int:
     maxSumBest = -float('inf')
     maxSumAtIndex = 0
     s = 0
-    subArray = []
+    subArray = ()
     for i in range(len(arr)):
         maxSumAtIndex += arr[i]
         if maxSumAtIndex > maxSumBest:
             maxSumBest = maxSumAtIndex
-            subArray = [s, i]
-        if maxSumAtIndex < 0:
+            subArray = (s, i)
+        # Carrying a subArray which give you negative sum will be of no use because
+        # it will decrease your sum.   
+        if maxSumAtIndex < 0: 
             maxSumAtIndex = 0
             s = i + 1
+          
     return (maxSumBest, subArray)
 
 def test(arr):
-    (longest, subArray) = maxSubArray(arr)
+    (longest, (start, end)) = maxSubArray(arr)
     print(f"The longest subArray for {arr} with maximum sum is: ", longest)
-    print("The subArray is: ")
-    for i in range(subArray[0], subArray[1] + 1):
+    print(f"The subArray is: {(start, end)}")
+    for i in range(start, end + 1):
         print(arr[i], end=" ")
     print()
 
