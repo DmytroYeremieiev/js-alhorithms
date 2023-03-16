@@ -1,5 +1,9 @@
 # Dutch National flag algorithm: O(N)
 
+[Source](https://takeuforward.org/data-structure/sort-an-array-of-0s-1s-and-2s/)
+
+[Leetcode](https://leetcode.com/problems/sort-colors/description/)
+
 ## Problem Statement
 
 Given an array consisting of only 0s, 1s and 2s. Write a program to in-place sort the array without using inbuilt sort functions. ( Expected: Single pass-O(N) and constant space)
