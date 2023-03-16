@@ -2,6 +2,7 @@
 #%%
 from typing import List
 
+# Time complexity: 2*N => O(n)
 def maxSubArray(arr: List[int]) -> int:
     dict = {
         0: 0,
