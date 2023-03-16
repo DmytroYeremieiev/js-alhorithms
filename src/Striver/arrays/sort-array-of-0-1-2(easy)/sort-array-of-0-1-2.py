@@ -3,7 +3,7 @@
 from typing import List
 
 # Time complexity: 2*N => O(n)
-def maxSubArray(arr: List[int]) -> int:
+def sortColors(arr: List[int]) -> int:
     dict = {
         0: 0,
         1: 0,
@@ -30,9 +30,9 @@ def maxSubArray(arr: List[int]) -> int:
     return arr
 
 
-print(maxSubArray([2,0,2,1,1,0])) # [0,0,1,1,2,2]
-print(maxSubArray([2,0,1])) # [0,1,2]
-print(maxSubArray([0])) # [0]
+print(sortColors([2,0,2,1,1,0])) # [0,0,1,1,2,2]
+print(sortColors([2,0,1])) # [0,1,2]
+print(sortColors([0])) # [0]
 
 
 # %%
